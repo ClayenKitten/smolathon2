@@ -1,0 +1,19 @@
+{
+	http_port 3000
+}
+
+http://{$DOMAIN} {
+	reverse_proxy web:3000
+}
+
+http://admin.{$DOMAIN} {
+	reverse_proxy homepage:3000
+}
+
+http://db.admin.{$DOMAIN} {
+	reverse_proxy dbgate:3000
+}
+
+http://s3.admin.{$DOMAIN} {
+	reverse_proxy minio:9001
+}

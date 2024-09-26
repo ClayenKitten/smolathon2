@@ -1,0 +1,15 @@
+name: Pull Request workflow
+permissions: write-all
+
+on:
+  pull_request:
+
+jobs:
+  check:
+    name: Check
+    uses: ./.github/workflows/check.yml
+
+  build:
+    name: Build
+    needs: check
+    uses: ./.github/workflows/build.yml

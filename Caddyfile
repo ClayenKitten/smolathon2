@@ -1,0 +1,28 @@
+(admin_auth) {
+	forward_auth nforwardauth:3000 {
+		uri /
+	}
+}
+
+{$DOMAIN} {
+	reverse_proxy web:3000
+}
+
+admin.{$DOMAIN} {
+	import admin_auth
+	reverse_proxy homepage:3000
+}
+
+auth.admin.{$DOMAIN} {
+	reverse_proxy nforwardauth:3000
+}
+
+db.admin.{$DOMAIN} {
+	import admin_auth
+	reverse_proxy dbgate:3000
+}
+
+s3.admin.{$DOMAIN} {
+	import admin_auth
+	reverse_proxy minio:9001
+}

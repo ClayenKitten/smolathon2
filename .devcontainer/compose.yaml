@@ -1,0 +1,49 @@
+services:
+  gateway:
+    extends:
+      service: gateway
+      file: ../compose.yaml
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+    environment:
+      DOMAIN: "localhost"
+
+  web:
+    build:
+      context: ../web
+      dockerfile: ../.devcontainer/Dockerfile
+    expose: [3000]
+    env_file: [../.env]
+    command: /bin/sh -c "while sleep 1000; do :; done"
+    volumes:
+      - ..:/app:cached
+
+  postgres:
+    extends:
+      service: postgres
+      file: ../compose.yaml
+
+  dbgate:
+    extends:
+      service: dbgate
+      file: ../compose.yaml
+
+  minio:
+    extends:
+      service: minio
+      file: ../compose.yaml
+
+  homepage:
+    extends:
+      service: homepage
+      file: ../compose.yaml
+    environment:
+      HOMEPAGE_VAR_PROTOCOL: http
+      HOMEPAGE_VAR_DOMAIN: $DOMAIN:3000
+
+volumes:
+  caddy_data:
+  caddy_config:
+  postgres:
+  dbgate:
+  minio:

@@ -1,0 +1,31 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    secrets:
+      HOST:
+        description: SSH host to connect to
+        required: true
+      USER:
+        description: SSH user to connect as
+        required: true
+      KEY:
+        description: SSH key to use
+        required: true
+
+jobs:
+  deploy:
+    name: Pull new image version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.KEY }}
+          script: |
+            cd ~/smolathon2
+            git reset --hard @{u} && git pull
+            docker compose pull && docker compose up -d --force-recreate

@@ -1,0 +1,23 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+
+hostname: smolathon2
+
+apt:
+  sources:
+    docker.list:
+      source: deb [arch=amd64] https://download.docker.com/linux/debian $RELEASE stable
+
+packages:
+  - git
+  - curl
+  - apt-transport-https
+  - ca-certificates
+  - software-properties-common
+
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+  - docker-buildx-plugin
+  - docker-compose-plugin

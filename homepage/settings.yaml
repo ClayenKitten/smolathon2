@@ -1,0 +1,16 @@
+title: smolathon2
+
+disableCollapse: true
+
+layout:
+  Application:
+    style: row
+    columns: 2
+  Services:
+    style: row
+  Bookmarks:
+    style: row
+    columns: 5
+
+quicklaunch:
+  provider:

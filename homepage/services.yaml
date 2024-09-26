@@ -1,0 +1,33 @@
+- Application:
+  - Web:
+      description: Main application
+      icon: mdi-web-#FFFFFF
+      href: "{{HOMEPAGE_VAR_PROTOCOL}}://{{HOMEPAGE_VAR_DOMAIN}}"
+      siteMonitor: http://web:3000/healthz
+  - API:
+      description: API documentation and testing panel
+      icon: mdi-api-#FFFFFF
+      href: "{{HOMEPAGE_VAR_PROTOCOL}}://{{HOMEPAGE_VAR_DOMAIN}}/api"
+- Services:
+  - Caddy:
+      description: Primary gateway
+      icon: caddy
+      ping: gateway
+      widget:
+        type: caddy
+        url: http://gateway:2019
+  - Postgres:
+      description: Primary SQL database
+      href: "{{HOMEPAGE_VAR_PROTOCOL}}://db.admin.{{HOMEPAGE_VAR_DOMAIN}}"
+      icon: postgres
+      ping: postgres
+  - Minio:
+      description: S3-compatible object storage
+      href: "{{HOMEPAGE_VAR_PROTOCOL}}://s3.admin.{{HOMEPAGE_VAR_DOMAIN}}"
+      icon: minio
+      siteMonitor: http://minio:9000/minio/health/live
+  - nforwardauth:
+      description: Simple authorization for admin services
+      href: "{{HOMEPAGE_VAR_PROTOCOL}}://auth.admin.{{HOMEPAGE_VAR_DOMAIN}}"
+      icon: https://cdn.jsdelivr.net/gh/selfhst/icons/png/nforwardauth.png
+      ping: nforwardauth
