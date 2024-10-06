@@ -4,7 +4,7 @@ import createS3 from "../s3";
 import createRepositories from "./repositories";
 import createServices from "./services";
 
-/** Creates inner context that is shared between all requests. */
+/** Creates local context for backend, e. g. user session. */
 export async function createInnerContext(opts: InnerContextOpts) {
 	let logger = createLogger();
 	let [db, s3] = await Promise.all([createDatabase(), createS3()]);
