@@ -3,10 +3,7 @@ import type { DB } from "../types";
 import { resetSequence } from "../utils";
 
 export async function seed(db: Kysely<DB>): Promise<void> {
-	const tables = [
-		"productOwnership",
-		"product"
-	] as const;
+	const tables = ["productOwnership", "product"] as const;
 	for (const table of tables) {
 		await db.deleteFrom(table).execute();
 		await resetSequence(db, table);
@@ -15,13 +12,13 @@ export async function seed(db: Kysely<DB>): Promise<void> {
 	await db
 		.insertInto("product")
 		.values([
-			{ 
+			{
 				title: "Продукт 1",
 				price: 1000,
 				author: "Котобар",
 				description: "Это пример описания продукта 1"
 			},
-			{ 
+			{
 				title: "Продукт 2",
 				price: 2000,
 				author: "Котофон",
@@ -40,10 +37,6 @@ export async function seed(db: Kysely<DB>): Promise<void> {
 				productId: 2,
 				userId: 1
 			}
-			
 		])
 		.execute();
-
-};
-	
-
+}

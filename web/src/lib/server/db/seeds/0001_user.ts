@@ -24,8 +24,6 @@ export async function seed(db: Kysely<DB>): Promise<void> {
 				name: "Котофей",
 				passwordHash: await argon2.hash("password")
 			}
-
-
 		])
 		.execute();
 }
