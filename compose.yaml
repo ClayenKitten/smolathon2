@@ -1,4 +1,5 @@
 services:
+  # Reverse proxy and API gateway service
   gateway:
     image: caddy:2.8-alpine
     ports: [80:80, 443:443]
@@ -12,6 +13,7 @@ services:
       - caddy_data:/data
       - caddy_config:/config
 
+  # Primary web service that includes both frontend and backend
   web:
     image: ghcr.io/clayenkitten/smolathon2:${DEPLOY_TAG}
     build: ./web
@@ -19,12 +21,30 @@ services:
     expose: [3000]
     restart: unless-stopped
     env_file: [.env]
+    depends_on:
+      init:
+        condition: service_completed_successfully
+      postgres:
+        condition: service_started
+      minio:
+        condition: service_started
     healthcheck:
       test: ["CMD", "curl", "--fail", "http://localhost:3000/healthz || exit 1"] 
       interval: 5s
       timeout: 5s
       retries: 5
+  
+  # Initialization service that handles database and S3 migrations
+  init:
+    build:
+      context: ./web
+      dockerfile: ./init.Dockerfile
+    env_file: [.env]
+    depends_on:
+      postgres:
+        condition: service_started
 
+  # Primary PostgreSQL database
   postgres:
     image: postgres:16
     expose: [5432]
@@ -34,6 +54,7 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
 
+  # Primary Minio S3 storage
   minio:
     image: quay.io/minio/minio:RELEASE.2024-09-22T00-33-43Z
     expose: [9000, 9001]
@@ -47,6 +68,7 @@ services:
       timeout: 5s
       retries: 5
 
+  # Web interface for PostgreSQL
   dbgate:
     image: dbgate/dbgate:5.3.1-alpine
     expose: [3000]
@@ -67,6 +89,7 @@ services:
     volumes:
       - dbgate:/root/.dbgate
 
+  # Basic reverse proxy authentification
   nforwardauth:
     image: nosduco/nforwardauth:v1
     expose: [3000]
@@ -80,6 +103,7 @@ services:
     volumes:
       - "${PWD}/.passwd:/passwd:ro"
 
+  # Admin homepage with links to various services and bookmarks
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
     expose: [3000]
