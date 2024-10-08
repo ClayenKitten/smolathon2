@@ -1,3 +1,18 @@
+@font-face {
+	font-family: "Montserrat";
+	font-weight: 700;
+	src:
+		local("Montserrat"),
+		url("/fonts/Montserrat-ExtraBold.ttf") format("truetype");
+}
+
+@font-face {
+	font-family: "NunitoSans";
+	src:
+		local("Nunito Sans"),
+		url("/fonts/NunitoSans.ttf") format("truetype");
+}
+
 * {
 	margin: 0;
 	padding: 0;
@@ -9,9 +24,49 @@
 }
 
 :root {
-	// Global styles
+	--primary: #07689f;
+	--secondary: #a2d5f2;
+	--secondary-bleek: #e9f7fe;
+	--main-bg: white;
+	--base-bg: #fafafa;
+
+	--text: #172126;
+	--text-note: #b9b8b8;
+	--text-disabled: #8c8c8c;
+	--H1: 700 48px/72px "Montserrat";
+	--H2: 700 40px/60px "Montserrat";
+	--H3: 700 34px/51px "Montserrat";
+	--H4: 700 28px/42px "Montserrat";
+	--H5: 700 23px/34.5px "Montserrat";
+	--B: 700 16px/24px "NunitoSans";
+	--P1: 400 16px/24px "NunitoSans";
+	--P1-bold: 600 16px/24px "NunitoSans";
+	--P1-extrabold: 800 16px/24px "NunitoSans";
+	--P2: 400 14px/21px "NunitoSans";
+	--P2-bold: 700 16px/17.08px "NunitoSans";
+	--P3-bold: 700 12px/13.2px "NunitoSans";
+	--P3-extrabold: 800 12px/18px "NunitoSans";
+	--P3-light: 300 12px/13.2px "NunitoSans";
+
+	--error: #f8565c;
+	--success: #91f8cc;
 }
 
 button {
 	cursor: pointer;
+}
+
+html,
+body {
+	height: 100%;
+	font-family: "NunitoSans";
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: "Montserrat";
 }
