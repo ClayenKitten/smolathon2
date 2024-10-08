@@ -101,7 +101,7 @@ services:
       RATE_LIMITER_FIND_TIME: 60
       RATE_LIMITER_BAN_TIME: 60
     volumes:
-      - "${PWD}/.passwd:/passwd:ro"
+      - ".passwd:/passwd:ro"
 
   # Admin homepage with links to various services and bookmarks
   homepage:
