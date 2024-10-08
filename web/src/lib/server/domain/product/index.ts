@@ -46,16 +46,7 @@ export class ProductRepository extends DbRepository {
 			.innerJoin("product", "product.id", "productOwnership.productId")
 			.selectAll()
 			.execute()
-			.then(r => Promise.all(r.map(x => this.mapProduct(x))));
-	}
-	private async mapProduct(record: Selectable<ProductTable>): Promise<Product> {
-		return new Product(
-			record.id,
-			record.title,
-			record.author,
-			record.price,
-			record.description
-		);
+			.then(r => Promise.all(r.map(Product.fromRecord)));
 	}
 
 	public async findById(id: number): Promise<Product | undefined> {
