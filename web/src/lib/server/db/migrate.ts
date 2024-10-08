@@ -3,7 +3,12 @@ import type { DB } from "$lib/server/db/types";
 import MyMigrationProvider from "./migration-provider";
 
 /** List of names of all migration files. */
-const migrations = [] as const;
+const migrations = [
+	"0001_initial",
+	"0002_profile",
+	"0003_email",
+	"0004_product"
+] as const;
 
 export default async function migrateToLatest(db: Kysely<DB>) {
 	const migrator = new Migrator({

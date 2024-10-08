@@ -1,12 +1,11 @@
 import { z } from "zod";
 import { publicProcedure, router } from "./trpc";
+import getUserRouter from "./user/index";
+import getProductRouter from "./product";
 
 const appRouter = router({
-	hello: publicProcedure
-		.input(z.object({ name: z.string().min(1).max(32) }))
-		.query(({ input }) => {
-			return `Hello, ${input.name}!`;
-		})
+	user: getUserRouter(),
+	product: getProductRouter()
 });
 
 type AppRouter = typeof appRouter;
