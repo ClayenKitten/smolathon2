@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export default function getChatRouter() {
 	return router({
-		// Gets chats of current user with the specified user //
+		/* Gets chats of current user with the specified user */
 		getUserChatWith: protectedProcedure.query(async ({ ctx }) => {
 			return await ctx.services.chat.getUserChatWith(ctx.session.user);
 		}),

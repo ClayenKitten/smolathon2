@@ -1,7 +1,7 @@
 import DbRepository from "../../db/repository";
 import * as m from "$lib/models";
 import type { Insertable, Selectable, Updateable } from "kysely";
-import type { Messages as MessageTable } from "$lib/server/db/types";
+import type { Message as MessageTable } from "$lib/server/db/types";
 import type { Chat } from "../chat";
 
 export class Message {
@@ -34,7 +34,7 @@ export class Message {
 export class MessageRepository extends DbRepository {
 	public async getChatMessages(chat: Chat): Promise<Message[]> {
 		return this.db
-			.selectFrom("messages")
+			.selectFrom("message")
 			.selectAll()
 			.where("chatId", "=", chat.id)
 			.execute()
@@ -43,7 +43,7 @@ export class MessageRepository extends DbRepository {
 
 	public async findById(id: number): Promise<Message | undefined> {
 		let record = await this.db
-			.selectFrom("messages")
+			.selectFrom("message")
 			.selectAll()
 			.where("id", "=", id)
 			.executeTakeFirst();
@@ -53,7 +53,7 @@ export class MessageRepository extends DbRepository {
 
 	public async create(dto: Insertable<MessageTable>): Promise<Message> {
 		let id = await this.db
-			.insertInto("messages")
+			.insertInto("message")
 			.values(dto)
 			.returning("id")
 			.executeTakeFirstOrThrow()
@@ -64,13 +64,13 @@ export class MessageRepository extends DbRepository {
 	public async update(id: number, dto: Updateable<MessageTable>) {
 		delete dto.id;
 		await this.db
-			.updateTable("messages")
+			.updateTable("message")
 			.where("id", "=", id)
 			.set(dto)
 			.execute();
 	}
 
 	public async delete(id: number) {
-		await this.db.deleteFrom("messages").where("id", "=", id).execute();
+		await this.db.deleteFrom("message").where("id", "=", id).execute();
 	}
 }

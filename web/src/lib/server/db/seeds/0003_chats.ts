@@ -1,25 +1,23 @@
 import { type Kysely } from "kysely";
 import type { DB } from "../types";
-import { resetSequence } from "../utils";
-import argon2 from "argon2";
 
 export async function seed(db: Kysely<DB>): Promise<void> {
 	await db
-		.insertInto("chats")
+		.insertInto("chat")
 		.values([
 			{
 				userId: 1,
-				otherId: 2
+				otherUserId: 2
 			},
 			{
 				userId: 2,
-				otherId: 1
+				otherUserId: 1
 			}
 		])
 		.execute();
 
 	await db
-		.insertInto("messages")
+		.insertInto("message")
 		.values([
 			{
 				senderId: 1,

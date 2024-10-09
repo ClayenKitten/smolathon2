@@ -5,8 +5,8 @@ import argon2 from "argon2";
 
 export async function seed(db: Kysely<DB>): Promise<void> {
 	const tables = [
-		"messages",
-		"chats",
+		"message",
+		"chat",
 		"productOwnership",
 		"product",
 		"passwordRecovery",

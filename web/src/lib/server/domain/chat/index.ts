@@ -1,30 +1,23 @@
 import DbRepository from "../../db/repository";
-import type Result from "../../util/result";
-import * as m from "$lib/models";
 import type { Insertable, Selectable, Updateable } from "kysely";
-import type {
-	Chats as ChatsTable,
-	Messages,
-	Timestamp
-} from "$lib/server/db/types";
+import type { Chat as ChatsTable } from "$lib/server/db/types";
 import type { User } from "../user";
-import { TRPCError } from "@trpc/server";
 import type { Message, MessageRepository } from "../message";
 
 export class Chat {
 	constructor(
 		public id: number,
 		public userId: number,
-		public otherId: number
+		public otherUserId: number
 	) {}
 
 	public static create(id: number, record: Insertable<ChatsTable>) {
-		let { userId, otherId } = record;
-		return new Chat(id, userId, otherId);
+		let { userId, otherUserId } = record;
+		return new Chat(id, userId, otherUserId);
 	}
 
 	public static fromRecord(record: Selectable<ChatsTable>): Chat {
-		return new Chat(record.id, record.userId, record.otherId);
+		return new Chat(record.id, record.userId, record.otherUserId);
 	}
 }
 
@@ -44,7 +37,7 @@ export class ChatService {
 export class ChatRepository extends DbRepository {
 	public async getUserChatWith(user: User): Promise<Chat[]> {
 		return this.db
-			.selectFrom("chats")
+			.selectFrom("chat")
 			.where("userId", "=", user.id)
 			.selectAll()
 			.execute()
@@ -53,7 +46,7 @@ export class ChatRepository extends DbRepository {
 
 	public async findById(id: number): Promise<Chat> {
 		let record = await this.db
-			.selectFrom("chats")
+			.selectFrom("chat")
 			.selectAll()
 			.where("id", "=", id)
 			.executeTakeFirst();
@@ -63,7 +56,7 @@ export class ChatRepository extends DbRepository {
 
 	public async create(dto: Insertable<ChatsTable>): Promise<Chat> {
 		let id = await this.db
-			.insertInto("chats")
+			.insertInto("chat")
 			.values(dto)
 			.returning("id")
 			.executeTakeFirstOrThrow()
@@ -73,10 +66,10 @@ export class ChatRepository extends DbRepository {
 
 	public async update(id: number, dto: Updateable<ChatsTable>) {
 		delete dto.id;
-		await this.db.updateTable("chats").where("id", "=", id).set(dto).execute();
+		await this.db.updateTable("chat").where("id", "=", id).set(dto).execute();
 	}
 
 	public async delete(id: number) {
-		await this.db.deleteFrom("chats").where("id", "=", id).execute();
+		await this.db.deleteFrom("chat").where("id", "=", id).execute();
 	}
 }
