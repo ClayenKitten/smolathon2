@@ -1,0 +1,76 @@
+import DbRepository from "../../db/repository";
+import * as m from "$lib/models";
+import type { Insertable, Selectable, Updateable } from "kysely";
+import type { Messages as MessageTable } from "$lib/server/db/types";
+import type { Chat } from "../chat";
+
+export class Message {
+	constructor(
+		public id: number,
+		public senderId: number,
+		public recipientId: number,
+		public content: m.ChatMessage,
+		public date: Date | string,
+		public chatId: number
+	) {}
+
+	public static create(id: number, record: Insertable<MessageTable>) {
+		let { senderId, recipientId, content, date, chatId } = record;
+		return new Message(id, senderId, recipientId, content, date, chatId);
+	}
+
+	public static fromRecord(record: Selectable<MessageTable>): Message {
+		return new Message(
+			record.id,
+			record.senderId,
+			record.recipientId,
+			record.content,
+			record.date,
+			record.chatId
+		);
+	}
+}
+
+export class MessageRepository extends DbRepository {
+	public async getChatMessages(chat: Chat): Promise<Message[]> {
+		return this.db
+			.selectFrom("messages")
+			.selectAll()
+			.where("chatId", "=", chat.id)
+			.execute()
+			.then(r => Promise.all(r.map(Message.fromRecord)));
+	}
+
+	public async findById(id: number): Promise<Message | undefined> {
+		let record = await this.db
+			.selectFrom("messages")
+			.selectAll()
+			.where("id", "=", id)
+			.executeTakeFirst();
+		if (record === undefined) throw new Error("message id not found");
+		return Message.fromRecord(record);
+	}
+
+	public async create(dto: Insertable<MessageTable>): Promise<Message> {
+		let id = await this.db
+			.insertInto("messages")
+			.values(dto)
+			.returning("id")
+			.executeTakeFirstOrThrow()
+			.then(x => x.id);
+		return Message.create(id, dto);
+	}
+
+	public async update(id: number, dto: Updateable<MessageTable>) {
+		delete dto.id;
+		await this.db
+			.updateTable("messages")
+			.where("id", "=", id)
+			.set(dto)
+			.execute();
+	}
+
+	public async delete(id: number) {
+		await this.db.deleteFrom("messages").where("id", "=", id).execute();
+	}
+}

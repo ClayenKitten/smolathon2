@@ -11,11 +11,26 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
 
 export type Timestamp = ColumnType<Date, Date | string>;
 
+export interface Chats {
+  id: Generated<number>;
+  otherId: number;
+  userId: number;
+}
+
 export interface EmailChangeRequest {
   code: string;
   expires: Timestamp;
   newEmail: string;
   userId: number;
+}
+
+export interface Messages {
+  chatId: number;
+  content: string;
+  date: Timestamp;
+  id: Generated<number>;
+  recipientId: number;
+  senderId: number;
 }
 
 export interface PasswordRecovery {
@@ -60,7 +75,9 @@ export interface User {
 }
 
 export interface DB {
+  chats: Chats;
   emailChangeRequest: EmailChangeRequest;
+  messages: Messages;
   passwordRecovery: PasswordRecovery;
   pendingRegistration: PendingRegistration;
   product: Product;

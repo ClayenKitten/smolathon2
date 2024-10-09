@@ -25,3 +25,7 @@ export type Url = TypeOf<typeof Url>;
 /** Numerical id. */
 export const Id = z.number().int().nonnegative();
 export type Id = TypeOf<typeof Id>;
+
+/** Text message model */
+export const ChatMessage = z.string().min(1).max(8192);
+export type ChatMessage = TypeOf<typeof ChatMessage>;

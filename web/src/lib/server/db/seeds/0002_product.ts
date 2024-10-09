@@ -3,12 +3,6 @@ import type { DB } from "../types";
 import { resetSequence } from "../utils";
 
 export async function seed(db: Kysely<DB>): Promise<void> {
-	const tables = ["productOwnership", "product"] as const;
-	for (const table of tables) {
-		await db.deleteFrom(table).execute();
-		await resetSequence(db, table);
-	}
-
 	await db
 		.insertInto("product")
 		.values([
