@@ -1,6 +1,5 @@
 import { sql, type Kysely } from "kysely";
 import type { DB } from "../types";
-import { resetSequence } from "../utils";
 
 export async function seed(db: Kysely<DB>): Promise<void> {
 	await db
