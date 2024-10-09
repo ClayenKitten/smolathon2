@@ -1,11 +1,12 @@
-import { z } from "zod";
-import { publicProcedure, router } from "./trpc";
 import getUserRouter from "./user/index";
 import getProductRouter from "./product";
+import getChatRouter from "./chat";
+import { router } from "./trpc";
 
 const appRouter = router({
 	user: getUserRouter(),
-	product: getProductRouter()
+	product: getProductRouter(),
+	chat: getChatRouter()
 });
 
 type AppRouter = typeof appRouter;

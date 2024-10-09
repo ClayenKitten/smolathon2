@@ -5,6 +5,10 @@ import argon2 from "argon2";
 
 export async function seed(db: Kysely<DB>): Promise<void> {
 	const tables = [
+		"message",
+		"chat",
+		"productOwnership",
+		"product",
 		"passwordRecovery",
 		"emailChangeRequest",
 		"pendingRegistration",
@@ -20,8 +24,13 @@ export async function seed(db: Kysely<DB>): Promise<void> {
 		.insertInto("user")
 		.values([
 			{
-				email: "user@smolathon.clayenkitten.ru",
+				email: "user1@smolathon.clayenkitten.ru",
 				name: "Котофей",
+				passwordHash: await argon2.hash("password")
+			},
+			{
+				email: "user2@smolathon.clayenkitten.ru",
+				name: "Котолог",
 				passwordHash: await argon2.hash("password")
 			}
 		])

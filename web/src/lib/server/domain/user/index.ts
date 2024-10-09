@@ -126,13 +126,13 @@ export class UserService {
 }
 
 export class UserRepository extends DbRepository {
-	public async findById(id: number): Promise<User | undefined> {
+	public async findById(id: number): Promise<User> {
 		let record = await this.db
 			.selectFrom("user")
 			.selectAll()
 			.where("id", "=", id)
 			.executeTakeFirst();
-		if (record === undefined) return undefined;
+		if (record === undefined) throw new Error("user id not found");
 		return User.fromRecord(record);
 	}
 

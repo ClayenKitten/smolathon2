@@ -25,7 +25,9 @@ seed-скрипты создают следующие аккаунты:
 
 | Email                           | Пароль   |
 | ------------------------------- | -------- |
-| user@smolathon.clayenkitten.ru | password |
+| user1@smolathon.clayenkitten.ru | password |
+| user2@smolathon.clayenkitten.ru | password |
+
 
 ### Сервисы
 
