@@ -36,10 +36,6 @@ export class SessionService {
 	public async logout(session: Session) {
 		await this.repos.session.delete(session);
 	}
-
-	public async logoutAll(session: Session) {
-		await this.repos.session.deleteAllExceptCurrent(session);
-	}
 }
 
 export class Session {

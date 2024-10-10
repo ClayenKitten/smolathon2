@@ -1,9 +1,8 @@
 import DbRepository from "../../db/repository";
-import type Result from "../../util/result";
 import * as m from "$lib/models";
 import type { Insertable, Selectable, Updateable } from "kysely";
 import type { Post as PostTable } from "$lib/server/db/types";
-import type { User, UserRepository } from "../user";
+import type { User } from "../user";
 import { PostPreview } from "$lib/models/post";
 
 export class Post {
@@ -51,14 +50,16 @@ export class PostService {
 		header: string,
 		content: string | null,
 		user: User,
-		date: Date | string
+		date: Date | string,
+		attachments: m.Attachment
 	) {
 		var userId = user.id;
 		var dto: Insertable<PostTable> = {
 			header,
 			content,
 			userId,
-			date
+			date,
+			attachments
 		};
 		return this.repos.post.create(dto);
 	}
@@ -69,10 +70,11 @@ export class PostRepository extends DbRepository {
 		header: string,
 		content: string | null,
 		user: User,
-		date: Date | string
+		date: Date | string,
+		attachments: m.Attachment
 	) {}
 	public async getUserPosts(user: User): Promise<PostPreview[]> {
-		return this.db
+		return (await this.db
 			.selectFrom("post")
 			.where("userId", "=", user.id)
 			.innerJoin("user", "user.id", "post.userId")
@@ -83,7 +85,7 @@ export class PostRepository extends DbRepository {
 				"user.name as userName",
 				"post.attachments"
 			])
-			.execute();
+			.execute()) as PostPreview[];
 	}
 
 	public async findById(id: number): Promise<Post> {

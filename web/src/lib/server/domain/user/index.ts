@@ -24,18 +24,11 @@ export class User {
 		public passwordHash: string,
 		public name: string,
 		public surname: string | null | undefined,
-		public city: string | null | undefined,
 		public phone: string | null | undefined,
 		public workplace: string | null | undefined,
 		public info: string | null | undefined,
 		public telegram: string | null | undefined,
 		public vk: string | null | undefined,
-		public dprofile: string | null | undefined,
-		public behance: string | null | undefined,
-		public dribble: string | null | undefined,
-		public unsplash: string | null | undefined,
-		public ozenkaMusic: string | null | undefined,
-		public vkMusic: string | null | undefined,
 		public personalSite: string | null | undefined
 	) {}
 
@@ -45,18 +38,11 @@ export class User {
 			passwordHash,
 			name,
 			surname,
-			city,
 			phone,
 			workplace,
 			info,
 			telegram,
 			vk,
-			dprofile,
-			behance,
-			dribble,
-			unsplash,
-			ozenkaMusic,
-			vkMusic,
 			personalSite
 		} = record;
 		return new User(
@@ -65,18 +51,11 @@ export class User {
 			passwordHash,
 			name,
 			surname,
-			city,
 			phone,
 			workplace,
 			info,
 			telegram,
 			vk,
-			dprofile,
-			behance,
-			dribble,
-			unsplash,
-			ozenkaMusic,
-			vkMusic,
 			personalSite
 		);
 	}
@@ -88,18 +67,11 @@ export class User {
 			record.passwordHash,
 			record.name,
 			record.surname,
-			record.city,
 			record.phone,
 			record.workplace,
 			record.info,
 			record.telegram,
 			record.vk,
-			record.dprofile,
-			record.behance,
-			record.dribble,
-			record.unsplash,
-			record.ozenkaMusic,
-			record.vkMusic,
 			record.personalSite
 		);
 	}

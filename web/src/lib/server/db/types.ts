@@ -88,23 +88,17 @@ export interface Session {
 }
 
 export interface User {
-  behance: string | null;
-  city: string | null;
-  dprofile: string | null;
-  dribble: string | null;
   email: string;
   id: Generated<number>;
   info: string | null;
   name: string;
-  ozenkaMusic: string | null;
   passwordHash: string;
   personalSite: string | null;
   phone: string | null;
+  profilePic: string | null;
   surname: string | null;
   telegram: string | null;
-  unsplash: string | null;
   vk: string | null;
-  vkMusic: string | null;
   workplace: string | null;
 }
 
