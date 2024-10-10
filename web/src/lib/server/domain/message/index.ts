@@ -38,26 +38,23 @@ export class MessageRepository extends DbRepository {
 		chatTwo: Chat,
 		date: Date | string
 	): Promise<Message> {
-		var senderId = chatOne.userId;
-		var recipientId = chatOne.otherUserId;
-		var chatId = chatOne.id;
-		var dto: Insertable<MessageTable> = {
+		let senderId = chatOne.userId;
+		let recipientId = chatOne.otherUserId;
+
+		let message = await this.create({
+			chatId: chatOne.id,
 			senderId,
 			recipientId,
-			chatId,
 			content,
 			date
-		};
-		let message = await this.create(dto);
-		var chatId = chatTwo.id;
-		var dto: Insertable<MessageTable> = {
+		});
+		await this.create({
+			chatId: chatTwo.id,
 			senderId,
 			recipientId,
-			chatId,
 			content,
 			date
-		};
-		await this.create(dto);
+		});
 		return message;
 	}
 

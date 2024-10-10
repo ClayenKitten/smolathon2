@@ -2,6 +2,7 @@ import { ChatMessage } from "$lib/models";
 import { defaultTransformer, TRPCError } from "@trpc/server";
 import { protectedProcedure, router } from "./trpc";
 import { z } from "zod";
+import type { Chat } from "../domain/chat";
 
 export default function getChatRouter() {
 	return router({
@@ -10,40 +11,44 @@ export default function getChatRouter() {
 			return await ctx.services.chat.getUserChatWith(ctx.session.user);
 		}),
 		getChatMessages: protectedProcedure
-			.input(z.object({ chatId: z.number() }))
+			.input(z.object({ userId: z.number() }))
 			.query(async ({ ctx, input }) => {
-				const chat = await ctx.repositories.chat.findById(input.chatId);
-				if (chat.userId !== ctx.session.user.id)
+				if (ctx.session.user === undefined)
 					throw new TRPCError({ code: "UNAUTHORIZED" });
+				var recipient = await ctx.repositories.user.findById(input.userId);
+				const chat = await ctx.repositories.chat.findChatByRecipient(
+					ctx.session.user,
+					recipient
+				);
 				return await ctx.services.chat.getChatMessages(chat);
 			}),
 		sendMessage: protectedProcedure
 			.input(z.object({ userId: z.number(), content: ChatMessage }))
 			.query(async ({ ctx, input }) => {
 				const date = new Date();
-				var recipient = await ctx.repositories.user.findById(input.userId);
+				let chatOne: Chat;
+				let chatTwo: Chat;
+				let recipient = await ctx.repositories.user.findById(input.userId);
 				try {
-					var chatOne = await ctx.repositories.chat.findChatByRecipient(
+					chatOne = await ctx.repositories.chat.findChatByRecipient(
 						ctx.session.user,
 						recipient
 					);
-					var chatTwo = await ctx.repositories.chat.findChatByRecipient(
+					chatTwo = await ctx.repositories.chat.findChatByRecipient(
 						recipient,
 						ctx.session.user
 					);
 				} catch {
-					var chatOne = await ctx.services.chat.createNewChat(
+					chatOne = await ctx.services.chat.createNewChat(
 						ctx.session.user,
 						recipient
 					);
-					var chatTwo = await ctx.repositories.chat.findChatByRecipient(
+					chatTwo = await ctx.repositories.chat.findChatByRecipient(
 						recipient,
 						ctx.session.user
 					);
 				}
 
-				if (chatOne.userId !== ctx.session.user.id)
-					throw new TRPCError({ code: "UNAUTHORIZED" });
 				return await ctx.services.chat.sendMessage(
 					input.content,
 					chatOne,
