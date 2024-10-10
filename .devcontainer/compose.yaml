@@ -1,10 +1,14 @@
 services:
   gateway:
-    extends:
-      service: gateway
-      file: ../compose.yaml
+    image: caddy:2.8-alpine
+    ports: [3000:3000]
+    cap_add: [NET_ADMIN]
+    restart: unless-stopped
+    env_file: [.env]
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
     environment:
       DOMAIN: "localhost"
 
@@ -23,6 +27,11 @@ services:
       service: postgres
       file: ../compose.yaml
 
+  init-db:
+    extends:
+      service: init-db
+      file: ../compose.yaml
+
   dbgate:
     extends:
       service: dbgate
@@ -31,6 +40,11 @@ services:
   minio:
     extends:
       service: minio
+      file: ../compose.yaml
+
+  init-s3:
+    extends:
+      service: init-s3
       file: ../compose.yaml
 
   homepage:

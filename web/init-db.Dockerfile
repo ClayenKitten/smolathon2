@@ -7,5 +7,5 @@ COPY ./package-lock.json .
 COPY ./kysely.config.ts .
 COPY ./src/lib/server/db/migrations ./src/lib/server/db/migrations
 
-RUN npm ci kysely kysely-ctl
+RUN npm ci
 ENTRYPOINT ["npm", "run", "db", "migrate", "latest", "--", "--all"]

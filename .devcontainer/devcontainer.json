@@ -2,7 +2,7 @@
 	"dockerComposeFile": ["./compose.yaml"],
 	"workspaceFolder": "/app",
 	"service": "web",
-	"runServices": ["gateway", "postgres", "dbgate", "minio", "homepage"],
+	"runServices": ["gateway", "postgres", "init-db", "dbgate", "minio", "init-s3", "homepage"],
 	"customizations": {
 		"vscode": {
 			"extensions": [

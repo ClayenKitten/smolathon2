@@ -8,12 +8,22 @@ export default function getS3Router() {
 		authorize: publicProcedure
 			.input(
 				z.object({
-					path: z.string(),
-					method: z.union([z.literal("GET"), z.literal("PUT")])
+					method: z.union([z.literal("GET"), z.literal("PUT")]),
+					prefix: z.string(),
+					id: z.string()
 				})
 			)
 			.query(({ ctx, input }) => {
-				// TODO: validation
+				// At the moment, S3 only includes publically available files, but private ones may occur later.
+				if (input.method === "GET") return true;
+				if (input.method === "PUT") {
+					if (!ctx.session) return false;
+					// TODO: check that avatar id matches user id
+					if (input.prefix === "avatar") return false;
+					// TODO: check that attacment id matches user id
+					if (input.prefix === "attachment") return false;
+					return false;
+				}
 				return true;
 			})
 	});
