@@ -1,5 +1,5 @@
 import { ChatMessage } from "$lib/models";
-import { defaultTransformer } from "@trpc/server";
+import { defaultTransformer, TRPCError } from "@trpc/server";
 import { protectedProcedure, router } from "./trpc";
 import { z } from "zod";
 
@@ -14,15 +14,14 @@ export default function getChatRouter() {
 			.query(async ({ ctx, input }) => {
 				const chat = await ctx.repositories.chat.findById(input.chatId);
 				if (chat.userId !== ctx.session.user.id)
-					throw new Error("UNAUTHORIZED");
+					throw new TRPCError({ code: "UNAUTHORIZED" });
 				return await ctx.services.chat.getChatMessages(chat);
 			}),
 		sendMessage: protectedProcedure
-			.input(z.object({ userId: z.number(), content: ChatMessage })) //тут userId, не chatId
+			.input(z.object({ userId: z.number(), content: ChatMessage }))
 			.query(async ({ ctx, input }) => {
 				const date = new Date();
 				var recipient = await ctx.repositories.user.findById(input.userId);
-				//TODO функция найти чат по получателю
 				try {
 					var chatOne = await ctx.repositories.chat.findChatByRecipient(
 						ctx.session.user,
@@ -44,7 +43,7 @@ export default function getChatRouter() {
 				}
 
 				if (chatOne.userId !== ctx.session.user.id)
-					throw new Error("UNAUTHORIZED");
+					throw new TRPCError({ code: "UNAUTHORIZED" });
 				return await ctx.services.chat.sendMessage(
 					input.content,
 					chatOne,

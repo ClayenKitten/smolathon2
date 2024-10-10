@@ -3,12 +3,14 @@ import getProductRouter from "./product";
 import getChatRouter from "./chat";
 import { router } from "./trpc";
 import getS3Router from "./s3";
+import getPostRouter from "./post";
 
 const appRouter = router({
 	user: getUserRouter(),
 	product: getProductRouter(),
 	chat: getChatRouter(),
-	s3: getS3Router()
+	s3: getS3Router(),
+	post: getPostRouter()
 });
 
 type AppRouter = typeof appRouter;

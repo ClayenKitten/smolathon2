@@ -9,6 +9,7 @@ import { Client as Minio } from "minio";
 import { ProductRepository } from "../domain/product";
 import { ChatRepository } from "../domain/chat";
 import { MessageRepository } from "../domain/message";
+import { PostRepository } from "../domain/post";
 
 export default function createRepositories(db: Kysely<DB>, s3: Minio) {
 	return {
@@ -19,7 +20,8 @@ export default function createRepositories(db: Kysely<DB>, s3: Minio) {
 		emailChange: new EmailChangeRepository(db),
 		product: new ProductRepository(db),
 		chat: new ChatRepository(db),
-		message: new MessageRepository(db)
+		message: new MessageRepository(db),
+		post: new PostRepository(db)
 	};
 }
 export type Repositories = ReturnType<typeof createRepositories>;

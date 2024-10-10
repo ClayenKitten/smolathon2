@@ -59,7 +59,6 @@ export class MessageRepository extends DbRepository {
 		};
 		await this.create(dto);
 		return message;
-		//TODO затестить, что создается по сообщению в каждом чате
 	}
 
 	public async getChatMessages(chat: Chat): Promise<Message[]> {

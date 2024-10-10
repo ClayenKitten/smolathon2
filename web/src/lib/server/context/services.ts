@@ -9,6 +9,7 @@ import { PasswordRecoveryService } from "../domain/user/passwordRecovery";
 import { SessionService } from "../domain/user/session";
 import { ProductService } from "../domain/product/index";
 import { ChatService } from "../domain/chat";
+import { PostService } from "../domain/post";
 
 export default function createServices(repos: Repositories) {
 	let s = {};
@@ -23,6 +24,7 @@ export default function createServices(repos: Repositories) {
 	addProp(s, "user", new UserService(s, repos));
 	addProp(s, "product", new ProductService(repos));
 	addProp(s, "chat", new ChatService(repos));
+	addProp(s, "post", new PostService(repos));
 	return s;
 }
 export type Services = ReturnType<typeof createServices>;
