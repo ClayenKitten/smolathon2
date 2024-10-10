@@ -3,6 +3,7 @@ import type { DB } from "../types";
 
 export async function seed(db: Kysely<DB>): Promise<void> {
 	const tables = [
+		"post",
 		"message",
 		"chat",
 		"productOwnership",

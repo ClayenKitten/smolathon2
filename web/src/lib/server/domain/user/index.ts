@@ -22,16 +22,86 @@ export class User {
 		public id: number,
 		public email: string,
 		public passwordHash: string,
-		public name: string
+		public name: string,
+		public surname: string | null | undefined,
+		public city: string | null | undefined,
+		public phone: string | null | undefined,
+		public workplace: string | null | undefined,
+		public info: string | null | undefined,
+		public telegram: string | null | undefined,
+		public vk: string | null | undefined,
+		public dprofile: string | null | undefined,
+		public behance: string | null | undefined,
+		public dribble: string | null | undefined,
+		public unsplash: string | null | undefined,
+		public ozenkaMusic: string | null | undefined,
+		public vkMusic: string | null | undefined,
+		public personalSite: string | null | undefined
 	) {}
 
 	public static create(id: number, record: Insertable<UserTable>) {
-		let { email, passwordHash, name } = record;
-		return new User(id, email, passwordHash, name);
+		let {
+			email,
+			passwordHash,
+			name,
+			surname,
+			city,
+			phone,
+			workplace,
+			info,
+			telegram,
+			vk,
+			dprofile,
+			behance,
+			dribble,
+			unsplash,
+			ozenkaMusic,
+			vkMusic,
+			personalSite
+		} = record;
+		return new User(
+			id,
+			email,
+			passwordHash,
+			name,
+			surname,
+			city,
+			phone,
+			workplace,
+			info,
+			telegram,
+			vk,
+			dprofile,
+			behance,
+			dribble,
+			unsplash,
+			ozenkaMusic,
+			vkMusic,
+			personalSite
+		);
 	}
 
 	public static fromRecord(record: Selectable<UserTable>): User {
-		return new User(record.id, record.email, record.passwordHash, record.name);
+		return new User(
+			record.id,
+			record.email,
+			record.passwordHash,
+			record.name,
+			record.surname,
+			record.city,
+			record.phone,
+			record.workplace,
+			record.info,
+			record.telegram,
+			record.vk,
+			record.dprofile,
+			record.behance,
+			record.dribble,
+			record.unsplash,
+			record.ozenkaMusic,
+			record.vkMusic,
+			record.personalSite
+		);
 	}
 }
 
@@ -44,6 +114,14 @@ export class UserService {
 			emailChange: EmailChangeRepository;
 		}
 	) {}
+	public async updateProfile() {
+		//TODO fix user profile
+	}
+	public async showProfile(userId: number) {
+		//TODO fix user profile
+		let user = await this.repos.user.findById(userId);
+		return user;
+	}
 
 	public async register(dto: m.Registration) {
 		let user = await this.repos.user.findByEmail(dto.email);
@@ -126,6 +204,12 @@ export class UserService {
 }
 
 export class UserRepository extends DbRepository {
+	public async UpdateProfile(id: number, dto: Insertable<UserTable>) {
+		//TODO fix profile
+		delete dto.id;
+		await this.db.updateTable("user").where("id", "=", id).set(dto).execute();
+	}
+
 	public async findById(id: number): Promise<User> {
 		let record = await this.db
 			.selectFrom("user")

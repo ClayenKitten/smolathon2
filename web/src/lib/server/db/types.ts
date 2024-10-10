@@ -9,6 +9,18 @@ export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
   ? ColumnType<S, I | undefined, U>
   : ColumnType<T, T | undefined, T>;
 
+export type Json = JsonValue;
+
+export type JsonArray = JsonValue[];
+
+export type JsonObject = {
+  [x: string]: JsonValue | undefined;
+};
+
+export type JsonPrimitive = boolean | number | string | null;
+
+export type JsonValue = JsonArray | JsonObject | JsonPrimitive;
+
 export type Timestamp = ColumnType<Date, Date | string>;
 
 export interface Chat {
@@ -47,6 +59,15 @@ export interface PendingRegistration {
   passwordHash: string;
 }
 
+export interface Post {
+  attachments: Generated<Json>;
+  content: string | null;
+  date: Timestamp;
+  header: string;
+  id: Generated<number>;
+  userId: number;
+}
+
 export interface Product {
   author: string;
   description: string | null;
@@ -67,11 +88,24 @@ export interface Session {
 }
 
 export interface User {
-  avatarUrl: string | null;
+  behance: string | null;
+  city: string | null;
+  dprofile: string | null;
+  dribble: string | null;
   email: string;
   id: Generated<number>;
+  info: string | null;
   name: string;
+  ozenkaMusic: string | null;
   passwordHash: string;
+  personalSite: string | null;
+  phone: string | null;
+  surname: string | null;
+  telegram: string | null;
+  unsplash: string | null;
+  vk: string | null;
+  vkMusic: string | null;
+  workplace: string | null;
 }
 
 export interface DB {
@@ -80,6 +114,7 @@ export interface DB {
   message: Message;
   passwordRecovery: PasswordRecovery;
   pendingRegistration: PendingRegistration;
+  post: Post;
   product: Product;
   productOwnership: ProductOwnership;
   session: Session;
