@@ -32,22 +32,16 @@ export type RecoveryConfirmation = TypeOf<typeof RecoveryConfirmation>;
 
 // по профилю. Нужно ли вообще пока - вопрос
 export const ProfileInfo = z.object({
-	email: z.string(),
-	info: z.string().nullable(),
-	name: z.string(),
-	personalSite: z.string().nullable(),
-	phone: z.string().nullable(),
-	profilePic: z.string().nullable(),
-	surname: z.string().nullable(),
-	telegram: z.string().nullable(),
-	vk: z.string().nullable(),
-	workplace: z.string().nullable()
+	id: z.number().min(1),
+	email: z.string().min(1),
+	info: z.string().min(1).nullable(),
+	name: z.string().min(1),
+	personalSite: z.string().min(1).nullable(),
+	phone: z.string().min(1).nullable(),
+	profilePic: z.string().min(1).nullable(),
+	surname: z.string().min(1).nullable(),
+	telegram: z.string().min(1).nullable(),
+	vk: z.string().min(1).nullable(),
+	workplace: z.string().min(1).nullable()
 });
 export type ProfileInfo = TypeOf<typeof ProfileInfo>;
-
-export const ChangeProfileInfo = z
-	.object({
-		name: Name
-	})
-	.partial();
-export type ChangeProfileInfo = TypeOf<typeof ChangeProfileInfo>;

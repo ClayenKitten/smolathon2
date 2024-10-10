@@ -10,11 +10,23 @@ export default function getProfileRouter() {
 			.mutation(async ({ ctx, input }) => {
 				let user = await ctx.repositories.user.findById(input.userId);
 				return await ctx.services.user.showProfile(user);
+			}),
+		updateProfileInfo: protectedProcedure
+			.input(z.object({ profile: m.ProfileInfo.partial() }))
+			.mutation(async ({ ctx, input }) => {
+				return await ctx.services.user.updateProfileInfo(
+					input.profile.email,
+					input.profile.info,
+					input.profile.name,
+					input.profile.personalSite,
+					input.profile.phone,
+					input.profile.profilePic,
+					input.profile.surname,
+					input.profile.telegram,
+					input.profile.vk,
+					input.profile.workplace,
+					ctx.session.user
+				);
 			})
-		/*updateProfileInfo: protectedProcedure
-			.input(z.object({ name: z.string(), no }))
-			.mutation(async ({ ctx }) => {
-				return await ctx.services.user.updateProfileInfo();
-			}),*/
 	});
 }

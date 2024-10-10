@@ -86,8 +86,33 @@ export class UserService {
 			emailChange: EmailChangeRepository;
 		}
 	) {}
-	public async updateProfile() {
-		//TODO fix user profile
+	public async updateProfileInfo(
+		email: string | undefined,
+		info: string | null | undefined,
+		name: string | undefined,
+		personalSite: string | null | undefined,
+		phone: string | null | undefined,
+		profilePic: string | null | undefined,
+		surname: string | null | undefined,
+		telegram: string | null | undefined,
+		vk: string | null | undefined,
+		workplace: string | null | undefined,
+		user: User
+	) {
+		var userId = user.id;
+		var dto: Updateable<UserTable> = {
+			email,
+			name,
+			surname,
+			phone,
+			workplace,
+			info,
+			telegram,
+			vk,
+			personalSite,
+			profilePic
+		};
+		return this.repos.user.UpdateProfile(userId, dto);
 	}
 	public async showProfile(user: User): Promise<m.ProfileInfo> {
 		return this.repos.user.showProfile(user);
@@ -179,6 +204,7 @@ export class UserRepository extends DbRepository {
 			.selectFrom("user")
 			.where("id", "=", user.id)
 			.select([
+				"id",
 				"name",
 				"surname",
 				"email",
@@ -193,8 +219,7 @@ export class UserRepository extends DbRepository {
 			.executeTakeFirst()) as m.ProfileInfo;
 	}
 
-	public async UpdateProfile(id: number, dto: Insertable<UserTable>) {
-		//TODO fix profile
+	public async UpdateProfile(id: number, dto: Updateable<UserTable>) {
 		delete dto.id;
 		await this.db.updateTable("user").where("id", "=", id).set(dto).execute();
 	}
