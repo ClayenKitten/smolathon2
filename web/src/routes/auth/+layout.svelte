@@ -1,67 +1,70 @@
-<script lang="ts">
-	import type { LayoutData } from "./$types";
-
-	export let data: LayoutData;
-</script>
-
-<div class="wrapper">
-	<div class="content">
-		<div class="logo">
-			<img class="logo" src="" alt="/logo.svg" />
+<div class="page">
+	<slot />
+	<div class="sidebar">
+		<div class="header">
+			<div class="logo">
+				<img src="/Logo.svg" alt="logo" />
+				<img src="/Ukras1.svg" alt="" />
+			</div>
+			<span>Креативный сервис из Смоленска: соединяем таланты с идеями</span>
 		</div>
-		<div class="form">
-			<slot />
+		<div class="slogans">
+			<div class="top">
+				<img src="/Community/Trust.svg" alt="" />
+				<img src="/Community/Society.svg" alt="" />
+			</div>
+			<div class="bottom">
+				<img src="/Community/Progress.svg" alt="" />
+				<img src="/Community/Cooperation.svg" alt="" />
+			</div>
 		</div>
 	</div>
-	<footer>
-		<img class="logo" src="" alt="/logo.svg" />
-	</footer>
 </div>
 
 <style lang="scss">
-	.wrapper {
-		display: inline-flex;
-		flex-direction: column;
+	.page {
+		display: flex;
 		height: 100%;
-		min-width: 100%;
 	}
-	.content {
-		flex: 1;
-		padding: 82px 0 188px 0;
-		background-color: var(--base-bg);
+	.sidebar {
+		width: 476px;
+		background-color: var(--primary-red);
+		color: var(--white);
 		display: flex;
 		flex-direction: column;
-		gap: 32px;
-		align-items: center;
-		.logo {
-			height: 94px;
-			width: 100.52px;
-		}
-		.form {
-			background-color: var(--main-bg);
-			border: 1px solid var(--secondary);
-			border-radius: 8px;
-			width: 512px;
-			padding: 40px 56px 40px 56px;
-			--input-width: 400px;
-			--paragraph-line: #d8d8d8;
-			--paragraph-text: #666666;
-		}
-	}
-	footer {
-		flex: 0 0 178px;
-		display: flex;
-		align-items: center;
-		background-color: var(--primary);
-		padding: 0 82px;
-		.logo {
-			height: 106px;
-			width: 106px;
+		gap: 24px;
+		padding: 60px;
+		.header {
 			display: flex;
-			justify-content: center;
-			border: 6px solid var(--main-bg);
-			border-radius: 100%;
-			background-color: var(--main-bg);
+			flex-direction: column;
+			gap: 20px;
+			.logo {
+				display: flex;
+				gap: 32px;
+			}
+		}
+		.slogans {
+			display: flex;
+			flex-direction: column;
+			gap: 42px;
+			border-left: 3px solid var(--white);
+			padding: 0 0 0 14px;
+			height: 100%;
+			position: relative;
+			font: var(--H2);
+			.top {
+				display: flex;
+				gap: 124px;
+				align-items: start;
+			}
+			.bottom {
+				position: absolute;
+				left: 92px;
+				bottom: 0;
+				display: flex;
+				gap: 124px;
+				align-items: end;
+			}
 		}
 	}
 </style>

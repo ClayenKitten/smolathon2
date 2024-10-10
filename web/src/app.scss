@@ -1,16 +1,16 @@
 @font-face {
-	font-family: "Montserrat";
-	font-weight: 700;
+	font-family: "Montserrat-Medium";
+	font-weight: 500;
 	src:
-		local("Montserrat"),
-		url("/fonts/Montserrat-ExtraBold.ttf") format("truetype");
+		local("Montserrat-Medium"),
+		url("/fonts/Montserrat-Medium.ttf") format("truetype");
 }
-
 @font-face {
-	font-family: "NunitoSans";
+	font-family: "Montserrat-SemiBold";
+	font-weight: 400;
 	src:
-		local("Nunito Sans"),
-		url("/fonts/NunitoSans.ttf") format("truetype");
+		local("Montserrat-SemiBold"),
+		url("/fonts/Montserrat-SemiBold.ttf") format("truetype");
 }
 
 * {
@@ -24,32 +24,25 @@
 }
 
 :root {
-	--primary: #07689f;
-	--secondary: #a2d5f2;
-	--secondary-bleek: #e9f7fe;
-	--main-bg: white;
-	--base-bg: #fafafa;
+	--primary-red: #e55846;
+	--primary-blue: #7da1b1;
+	--primary-yellow: #f0e262;
+	--black: #1f2322;
+	--white: #f2f3ee;
+	--error: #d6260f;
+	--success: #4ed60f;
 
-	--text: #172126;
-	--text-note: #b9b8b8;
-	--text-disabled: #8c8c8c;
-	--H1: 700 48px/72px "Montserrat";
-	--H2: 700 40px/60px "Montserrat";
-	--H3: 700 34px/51px "Montserrat";
-	--H4: 700 28px/42px "Montserrat";
-	--H5: 700 23px/34.5px "Montserrat";
-	--B: 700 16px/24px "NunitoSans";
-	--P1: 400 16px/24px "NunitoSans";
-	--P1-bold: 600 16px/24px "NunitoSans";
-	--P1-extrabold: 800 16px/24px "NunitoSans";
-	--P2: 400 14px/21px "NunitoSans";
-	--P2-bold: 700 16px/17.08px "NunitoSans";
-	--P3-bold: 700 12px/13.2px "NunitoSans";
-	--P3-extrabold: 800 12px/18px "NunitoSans";
-	--P3-light: 300 12px/13.2px "NunitoSans";
+	--grey-light: #cfcfcf;
+	--grey-deep: #676f73;
+	--a-white: #ffffff;
 
-	--error: #f8565c;
-	--success: #91f8cc;
+	--H1: 500 40px/40px "Montserrat-Medium";
+	--H2: 500 32px/40px "Montserrat-Medium";
+	--T-bold: 600 16px/24px "Montserrat-SemiBold";
+	--T: 500 16px/24px "Montserrat-Medium";
+	--A-bold: 600 12px/16px "Montserrat-SemiBold";
+	--A: 500 12px/16px "Montserrat-Medium";
+	--B: 500 16px/20px "Montserrat-Medium";
 }
 
 button {
@@ -59,7 +52,7 @@ button {
 html,
 body {
 	height: 100%;
-	font-family: "NunitoSans";
+	font-family: "Montserrat-SemiBold";
 }
 
 h1,
@@ -68,5 +61,5 @@ h3,
 h4,
 h5,
 h6 {
-	font-family: "Montserrat";
+	font-family: "Montserrat-SemiBold";
 }

@@ -5,71 +5,86 @@
 
 	export let invalid: boolean = false;
 	export let required: boolean = false;
-	export let minlength: number | undefined = undefined;
-	export let maxlength: number | undefined = undefined;
-	export let pattern: string | undefined = undefined;
 
 	export let autocomplete: string | undefined = undefined;
 </script>
 
-{#if type === "text"}
-	<input
-		type="text"
-		bind:value
-		class={invalid ? "invalid" : ""}
-		{placeholder}
-		{required}
-		{minlength}
-		{maxlength}
-		{pattern}
-		{autocomplete}
-		on:input
-		on:change
-	/>
-{:else if type === "email"}
-	<input
-		type="email"
-		bind:value
-		class={invalid ? "invalid" : ""}
-		{placeholder}
-		{required}
-		{minlength}
-		{maxlength}
-		{pattern}
-		{autocomplete}
-		on:input
-		on:change
-	/>
-{:else if type === "password"}
-	<input
-		type="password"
-		bind:value
-		class={invalid ? "invalid" : ""}
-		{placeholder}
-		{required}
-		{minlength}
-		{maxlength}
-		{pattern}
-		{autocomplete}
-		on:input
-		on:change
-	/>
-{/if}
+<label class={invalid ? "invalid" : ""}>
+	{#if type === "text"}
+		<input
+			type="text"
+			bind:value
+			{placeholder}
+			{required}
+			{autocomplete}
+			on:input
+			on:change
+		/>
+	{:else if type === "email"}
+		<input
+			type="email"
+			bind:value
+			class={invalid ? "invalid" : ""}
+			{placeholder}
+			{required}
+			{autocomplete}
+			on:input
+			on:change
+		/>
+	{:else if type === "password"}
+		<input
+			type="password"
+			bind:value
+			class={invalid ? "invalid" : ""}
+			{placeholder}
+			{required}
+			{autocomplete}
+			on:input
+			on:change
+		/>
+	{/if}
+	<span>{placeholder}</span>
+</label>
 
 <style lang="scss">
-	input {
+	label {
 		height: 52px;
+		display: flex;
+		gap: 4px;
+		flex-direction: column-reverse;
+		justify-content: center;
+		background: var(--white);
+		border: none;
+		border-left: 1px solid var(--black);
+		padding: 16px 24px 16px 24px;
+	}
+	input {
 		width: var(--input-width, 292px);
-		color: var(--text);
-		background: var(--main-bg);
-		border: 1px solid var(--secondary);
-		border-radius: 8px;
-		font: var(--P1);
-		padding: 14px 24px 14px 24px;
+		color: var(--black);
+		background: none;
+		border: none;
+		font: var(--B);
 		&::placeholder {
-			color: var(--text-note);
-			font: var(--P1-bold);
+			color: var(--grey-deep);
+			font: var(--B);
 		}
+		&:placeholder-shown + span {
+			display: none;
+		}
+		&:focus {
+			border: none;
+			outline: 0;
+			&::placeholder {
+				color: transparent;
+			}
+			+ span {
+				display: initial;
+			}
+		}
+	}
+	span {
+		color: var(--grey-deep);
+		font: var(--A);
 	}
 	.invalid {
 		border-color: var(--error);

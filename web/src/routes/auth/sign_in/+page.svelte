@@ -10,11 +10,11 @@
 	import { zod } from "sveltekit-superforms/adapters";
 
 	const signInSchema = z.object({
-		password: z.string().min(1, "Пароль должен содержать хотя бы 1 символ"),
+		password: z.string().min(1, "! Пароль должен содержать хотя бы 1 символ"),
 		email: z
 			.string()
-			.email("Некорректный адрес электронной почты")
-			.max(128, "Слишком длинный адрес")
+			.email("! Неверный формат почты")
+			.max(128, "! Слишком длинный адрес")
 	});
 
 	const { form, errors, enhance, validateForm } = superForm(
@@ -36,7 +36,7 @@
 		if (result.ok) {
 			goto("/");
 		} else {
-			error = "Неверный логин или пароль";
+			error = "! Неверный логин или пароль";
 		}
 		valid = (await validateForm()).valid;
 	}
@@ -48,94 +48,103 @@
 <main>
 	<form use:enhance>
 		<div class="header">
-			<h4>Вход в аккаунт</h4>
+			<img src="/Enter.svg" alt="" />
 		</div>
 		<div class="form">
 			<div class="inputs">
 				<label class="input" for={undefined}>
-					<span>Email</span>
 					<Input
 						type="email"
-						placeholder="Ваш email"
+						placeholder="Почта"
 						bind:value={$form.email}
 						required
 						invalid={$errors.email ? true : false}
 					/>
-					{#if $errors.email}<span class="error">{$errors.email}</span>{/if}
+					<div class="warning">
+						{#if $errors.email}<span class="error">{$errors.email}</span>{/if}
+					</div>
 				</label>
 				<label class="input" for={undefined}>
-					<div class="password_label">
-						<span>Пароль</span>
-						<a href="/auth/recovery">Забыли пароль?</a>
-					</div>
 					<Input
 						type="password"
-						placeholder="Ваш пароль"
+						placeholder="Пароль"
 						bind:value={$form.password}
 						required
 						invalid={$errors.password ? true : false}
 					/>
-					{#if $errors.password}<span class="error">{$errors.password}</span
-						>{/if}
+					<div class="warning">
+						{#if error}
+							<span class="error">{error}</span>
+						{/if}
+					</div>
 				</label>
 			</div>
 			<div class="submit">
 				<Button
-					text="Войти в аккаунт"
+					text="Войти"
 					kind="primary"
 					on:click={submit}
 					disabled={!valid}
 				/>
-				{#if error}
-					<span class="error">{error}</span>
-				{/if}
+				<div class="links">
+					<a href="/auth/recovery">Забыли пароль?</a>
+					<a href="/auth/sign_up">Зарегистрироваться</a>
+				</div>
 			</div>
 		</div>
 	</form>
-	<hr class="sign_up_offer" />
-	<a href="/auth/sign_up" class="button">
-		<span>Создать аккаунт</span>
-	</a>
 </main>
 
 <style lang="scss">
 	main {
 		display: flex;
-		flex-direction: column;
-		gap: 43px;
 		flex: 1;
-		align-items: center;
-		color: var(--text);
-	}
-	h4 {
-		color: var(--text);
-		font: var(--H4);
+		color: var(--black);
+		background-color: var(--white);
 	}
 	form {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 24px;
+		justify-content: center;
+		gap: 170px;
+		background-color: var(--white);
+		padding: 0px 200px 0px 125px;
 	}
 	.form {
 		display: flex;
 		flex-direction: column;
 		color: var(--text-note);
-		gap: 36px;
+		gap: 46px;
 		.error {
 			color: var(--error);
-			font: var(--P2);
+			font: var(--A);
 		}
 		.submit {
 			display: flex;
 			flex-direction: column;
 			text-align: center;
+			gap: 20px;
+			.links {
+				display: flex;
+				justify-content: space-between;
+				a {
+					color: var(--black);
+					font: var(--B);
+					&:hover {
+						color: var(--primary-blue);
+					}
+					&:focus {
+						color: var(--primary-blue);
+					}
+				}
+			}
 		}
 	}
 	.inputs {
 		display: flex;
 		flex-direction: column;
-		gap: 16px;
+		gap: 8px;
 	}
 	.input {
 		display: flex;
@@ -144,72 +153,11 @@
 		text-align: left;
 		gap: 2px;
 		span {
-			font: var(--P2);
-			color: var(--text);
+			font: var(--A);
+			color: var(--black);
 		}
-	}
-	.password_label {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		a {
-			color: var(--primary);
-			font: var(--P3-light);
-			text-decoration: none;
-			&:hover {
-				color: var(--secondary);
-			}
-			&:focus {
-				color: var(--primary);
-			}
-		}
-	}
-	.sign_up_offer {
-		width: 100%;
-		text-align: center;
-		font: var(--P1);
-		color: var(--paragraph-text);
-
-		border: none;
-		border-top: 2px solid var(--paragraph-line);
-		overflow: visible;
-		height: 0px;
-
-		&::after {
-			content: "Ещё нет аккаунта?";
-			background: var(--main-bg);
-			padding: 1px 23px;
-			position: relative;
-			top: -13px;
-		}
-	}
-	.button {
-		width: 100%;
-		height: 52px;
-		padding: 14px 32px 14px 32px;
-		border-radius: 8px;
-		align-content: center;
-		font: var(--B);
-		color: var(--primary);
-		background-color: var(--main-bg);
-		border: 1px solid var(--primary);
-		text-decoration: none;
-		text-align: center;
-
-		&:hover {
-			color: var(--secondary);
-			border-color: var(--secondary);
-		}
-
-		&:focus {
-			color: var(--primary);
-			border-color: var(--primary);
-		}
-
-		&:disabled {
-			color: var(--text-note);
-			border-color: var(--text-note);
-			cursor: not-allowed;
+		.warning {
+			height: 24px;
 		}
 	}
 </style>

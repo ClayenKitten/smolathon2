@@ -11,16 +11,16 @@
 	const signUpSchema = z.object({
 		name: z
 			.string()
-			.min(1, "Это поле не должно быть пустым")
-			.max(128, "Слишком длинное имя"),
+			.min(1, "! Это поле не должно быть пустым")
+			.max(128, "! Слишком длинное имя"),
 		email: z
 			.string()
-			.email("Некорректный адрес электронной почты")
-			.max(128, "Слишком длинный адрес"),
+			.email("! Неверный формат почты")
+			.max(128, "! Слишком длинный адрес"),
 		password: z
 			.string()
-			.min(8, "Пароль должен содержать хотя бы 8 символов")
-			.max(128, "Слишком длинный пароль"),
+			.min(8, "! Пароль должен содержать хотя бы 8 символов")
+			.max(128, "! Слишком длинный пароль"),
 		repeat_password: z.string()
 	});
 
@@ -55,81 +55,81 @@
 </script>
 
 <main>
+	<div class="header">
+		<img src="/Register.svg" alt="" />
+	</div>
 	{#if submitted === false}
 		<form use:enhance>
-			<div class="header">
-				<h4>Регистрация</h4>
-			</div>
-			<div class="form">
-				<div class="inputs">
-					<label class="input" for={undefined}>
-						<span>Имя</span>
-						<Input
-							type="text"
-							placeholder="Ваше имя"
-							bind:value={$form.name}
-							required
-							invalid={$errors.name ? true : false}
-						/>
+			<div class="inputs">
+				<label class="input" for={undefined}>
+					<Input
+						type="text"
+						placeholder="Ваше имя"
+						bind:value={$form.name}
+						required
+						invalid={$errors.name ? true : false}
+					/>
+					<div class="warning">
 						{#if $errors.name}<span class="error">{$errors.name}</span>{/if}
-					</label>
-					<label class="input" for={undefined}>
-						<span>Email</span>
-						<Input
-							type="email"
-							placeholder="Ваш email"
-							bind:value={$form.email}
-							required
-							invalid={$errors.email ? true : false}
-						/>
+					</div>
+				</label>
+				<label class="input" for={undefined}>
+					<Input
+						type="email"
+						placeholder="Ваш email"
+						bind:value={$form.email}
+						required
+						invalid={$errors.email ? true : false}
+					/>
+					<div class="warning">
 						{#if $errors.email}<span class="error">{$errors.email}</span>{/if}
-					</label>
-					<label class="input" for={undefined}>
-						<span>Пароль</span>
-						<Input
-							type="password"
-							placeholder="Ваш пароль"
-							bind:value={$form.password}
-							required
-							invalid={$errors.password ? true : false}
-						/>
+					</div>
+				</label>
+				<label class="input" for={undefined}>
+					<Input
+						type="password"
+						placeholder="Ваш пароль"
+						bind:value={$form.password}
+						required
+						invalid={$errors.password ? true : false}
+					/>
+					<div class="warning">
 						{#if $errors.password}<span class="error">{$errors.password}</span
 							>{/if}
-					</label>
-					<label class="input" for={undefined}>
-						<span>Повторите пароль</span>
-						<Input
-							type="password"
-							placeholder="Повторите  пароль"
-							bind:value={$form.repeat_password}
-							required
-							invalid={$form.password !== $form.repeat_password ||
-							$errors.password
-								? true
-								: false}
-						/>
+					</div>
+				</label>
+				<label class="input" for={undefined}>
+					<Input
+						type="password"
+						placeholder="Повторите  пароль"
+						bind:value={$form.repeat_password}
+						required
+						invalid={$form.password !== $form.repeat_password ||
+						$errors.password
+							? true
+							: false}
+					/>
+					<div class="warning">
 						{#if $form.password !== $form.repeat_password}<span class="error"
 								>Пароли не совпадают</span
 							>{/if}
-					</label>
-				</div>
+					</div>
+				</label>
+			</div>
+			<div class="submit">
 				<Button
 					text="Зарегистрироваться"
 					kind="primary"
 					on:click={create}
 					disabled={!valid}
 				/>
+				<div class="links">
+					<a href="/auth/sign_in" class="button">Войти</a>
+				</div>
 			</div>
 		</form>
-		<hr class="sign_up_offer" />
-		<a href="/auth/sign_in" class="button">
-			<span>Войти в аккаунт</span>
-		</a>
 	{:else}
 		<div class="submitted">
-			<div class="header">
-				<h4>Регистрация</h4>
-			</div>
 			<div class="finish">
 				<span class="info">
 					На адрес <span class="email">{$form.email}</span> было отправлено письмо
@@ -152,53 +152,45 @@
 	main {
 		display: flex;
 		flex-direction: column;
-		gap: 43px;
+		gap: 52px;
 		flex: 1;
-		align-items: center;
-		color: var(--text);
-	}
-	h4 {
-		color: var(--text);
-		font: var(--H4);
-	}
-	.submitted {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 20px;
-		.finish {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			gap: 28px;
-			.info {
-				text-align: center;
-				.email {
-					color: var(--primary);
-				}
-			}
-		}
+		color: var(--black);
+		background-color: var(--white);
+		padding: 60px 200px 0px 125px;
 	}
 	form {
 		display: flex;
 		flex-direction: column;
-		align-items: center;
-		gap: 24px;
-	}
-	.form {
-		display: flex;
-		flex-direction: column;
 		color: var(--text-note);
-		gap: 36px;
+		gap: 8px;
 		.error {
 			color: var(--error);
-			font: var(--P2);
+			font: var(--A);
+		}
+		.submit {
+			display: flex;
+			flex-direction: column;
+			text-align: center;
+			gap: 20px;
+			.links {
+				align-items: center;
+				a {
+					color: var(--black);
+					font: var(--B);
+					&:hover {
+						color: var(--primary-blue);
+					}
+					&:focus {
+						color: var(--primary-blue);
+					}
+				}
+			}
 		}
 	}
 	.inputs {
 		display: flex;
 		flex-direction: column;
-		gap: 16px;
+		gap: px;
 	}
 	.input {
 		display: flex;
@@ -207,56 +199,11 @@
 		text-align: left;
 		gap: 2px;
 		span {
-			font: var(--P2);
-			color: var(--text);
+			font: var(--A);
+			color: var(--black);
 		}
-	}
-	.sign_up_offer {
-		width: 100%;
-		text-align: center;
-		font: var(--P1);
-		color: var(--paragraph-text);
-
-		border: none;
-		border-top: 2px solid var(--paragraph-line);
-		overflow: visible;
-		height: 0px;
-
-		&::after {
-			content: "Уже есть аккаунт?";
-			background: var(--main-bg);
-			padding: 1px 23px;
-			position: relative;
-			top: -13px;
-		}
-	}
-	.button {
-		width: 100%;
-		height: 52px;
-		padding: 14px 32px 14px 32px;
-		border-radius: 8px;
-		align-content: center;
-		font: var(--B);
-		color: var(--main-bg);
-		background-color: var(--primary);
-		border: none;
-		text-decoration: none;
-		text-align: center;
-
-		&:hover {
-			color: var(--text);
-			background-color: var(--secondary);
-		}
-
-		&:focus {
-			color: var(--main-bg);
-			background-color: var(--primary);
-		}
-
-		&:disabled {
-			color: var(--text-disabled);
-			background-color: var(--text-note);
-			cursor: not-allowed;
+		.warning {
+			height: 24px;
 		}
 	}
 </style>

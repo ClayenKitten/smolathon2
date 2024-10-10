@@ -35,28 +35,27 @@
 	button {
 		height: 52px;
 		padding: 14px 32px 14px 32px;
-		border-radius: 8px;
 		align-content: center;
-		font: var(--B);
+		font: var(--T-bold);
 
 		&.primary {
-			color: var(--main-bg);
-			background-color: var(--primary);
+			color: var(--white);
+			background-color: var(--primary-blue);
 			border: none;
 
 			&:hover {
-				color: var(--text);
-				background-color: var(--secondary);
+				color: var(--black);
+				background-color: var(--primary-yellow);
 			}
 
 			&:focus {
-				color: var(--main-bg);
-				background-color: var(--primary);
+				color: var(--black);
+				background-color: var(--primary-yellow);
 			}
 
 			&:disabled {
-				color: var(--text-disabled);
-				background-color: var(--text-note);
+				color: var(--grey-deep);
+				background-color: var(--grey-light);
 				cursor: not-allowed;
 			}
 		}
