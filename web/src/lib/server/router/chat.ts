@@ -1,5 +1,5 @@
 import { ChatMessage } from "$lib/models";
-import { defaultTransformer, TRPCError } from "@trpc/server";
+import { TRPCError } from "@trpc/server";
 import { protectedProcedure, router } from "./trpc";
 import { z } from "zod";
 import type { Chat } from "../domain/chat";
@@ -49,6 +49,8 @@ export default function getChatRouter() {
 					);
 				}
 
+				if (chatOne.userId !== ctx.session.user.id)
+					throw new TRPCError({ code: "UNAUTHORIZED" });
 				return await ctx.services.chat.sendMessage(
 					input.content,
 					chatOne,
