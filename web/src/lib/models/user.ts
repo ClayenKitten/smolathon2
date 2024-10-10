@@ -38,10 +38,10 @@ export const ProfileInfo = z.object({
 	name: z.string().min(1),
 	personalSite: z.string().min(1).nullable(),
 	phone: z.string().min(1).nullable(),
-	profilePic: z.string().min(1).nullable(),
 	surname: z.string().min(1).nullable(),
 	telegram: z.string().min(1).nullable(),
 	vk: z.string().min(1).nullable(),
-	workplace: z.string().min(1).nullable()
+	workplace: z.string().min(1).nullable(),
+	isCreator: z.boolean()
 });
 export type ProfileInfo = TypeOf<typeof ProfileInfo>;

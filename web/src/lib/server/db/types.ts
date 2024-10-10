@@ -91,11 +91,11 @@ export interface User {
   email: string;
   id: Generated<number>;
   info: string | null;
+  isCreator: Generated<boolean>;
   name: string;
   passwordHash: string;
   personalSite: string | null;
   phone: string | null;
-  profilePic: string | null;
   surname: string | null;
   telegram: string | null;
   vk: string | null;

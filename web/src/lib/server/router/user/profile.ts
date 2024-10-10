@@ -12,7 +12,7 @@ export default function getProfileRouter() {
 				return await ctx.services.user.showProfile(user);
 			}),
 		updateProfileInfo: protectedProcedure
-			.input(z.object({ profile: m.ProfileInfo.partial() }))
+			.input(z.object({ profile: m.ProfileInfo.partial().omit({id:true}) }))
 			.mutation(async ({ ctx, input }) => {
 				return await ctx.services.user.updateProfileInfo(
 					input.profile.email,
@@ -20,7 +20,7 @@ export default function getProfileRouter() {
 					input.profile.name,
 					input.profile.personalSite,
 					input.profile.phone,
-					input.profile.profilePic,
+					input.profile.isCreator,
 					input.profile.surname,
 					input.profile.telegram,
 					input.profile.vk,

@@ -29,7 +29,8 @@ export class User {
 		public info: string | null | undefined,
 		public telegram: string | null | undefined,
 		public vk: string | null | undefined,
-		public personalSite: string | null | undefined
+		public personalSite: string | null | undefined,
+		public isCreator: boolean | undefined
 	) {}
 
 	public static create(id: number, record: Insertable<UserTable>) {
@@ -43,7 +44,8 @@ export class User {
 			info,
 			telegram,
 			vk,
-			personalSite
+			personalSite,
+			isCreator
 		} = record;
 		return new User(
 			id,
@@ -56,7 +58,8 @@ export class User {
 			info,
 			telegram,
 			vk,
-			personalSite
+			personalSite,
+			isCreator
 		);
 	}
 
@@ -72,7 +75,8 @@ export class User {
 			record.info,
 			record.telegram,
 			record.vk,
-			record.personalSite
+			record.personalSite,
+			record.isCreator
 		);
 	}
 }
@@ -92,7 +96,7 @@ export class UserService {
 		name: string | undefined,
 		personalSite: string | null | undefined,
 		phone: string | null | undefined,
-		profilePic: string | null | undefined,
+		isCreator: boolean | undefined,
 		surname: string | null | undefined,
 		telegram: string | null | undefined,
 		vk: string | null | undefined,
@@ -107,10 +111,10 @@ export class UserService {
 			phone,
 			workplace,
 			info,
+			isCreator,
 			telegram,
 			vk,
-			personalSite,
-			profilePic
+			personalSite
 		};
 		return this.repos.user.UpdateProfile(userId, dto);
 	}
@@ -211,10 +215,10 @@ export class UserRepository extends DbRepository {
 				"info",
 				"personalSite",
 				"phone",
-				"profilePic",
 				"telegram",
 				"vk",
-				"workplace"
+				"workplace",
+				"isCreator"
 			])
 			.executeTakeFirst()) as m.ProfileInfo;
 	}
