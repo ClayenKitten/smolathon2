@@ -87,6 +87,12 @@ export interface Session {
   userId: number;
 }
 
+export interface Subscription {
+  id: Generated<number>;
+  subId: number;
+  userId: number;
+}
+
 export interface User {
   email: string;
   id: Generated<number>;
@@ -112,5 +118,6 @@ export interface DB {
   product: Product;
   productOwnership: ProductOwnership;
   session: Session;
+  subscription: Subscription;
   user: User;
 }

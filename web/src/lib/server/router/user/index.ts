@@ -2,6 +2,7 @@ import { router } from "../trpc";
 import getSessionRouter from "./session";
 import getAccountRouter from "./account";
 import getProfileRouter from "./profile";
+import getSubscriptionRouter from "./subscriptions";
 
 export default function getUserRouter() {
 	return router({
@@ -10,6 +11,8 @@ export default function getUserRouter() {
 		/** Session management. */
 		session: getSessionRouter(),
 		/** Profile management. */
-		profile: getProfileRouter()
+		profile: getProfileRouter(),
+		/** Subscription management. */
+		subscription: getSubscriptionRouter()
 	});
 }

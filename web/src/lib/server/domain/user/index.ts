@@ -16,6 +16,7 @@ import * as m from "$lib/models";
 import type { Insertable, Selectable, Updateable } from "kysely";
 import type { User as UserTable } from "$lib/server/db/types";
 import { EmailChangeRequest, type EmailChangeRepository } from "./emailChange";
+import type { Subscription, SubscriptionRepository } from "../subscription";
 
 export class User {
 	private constructor(
@@ -88,8 +89,19 @@ export class UserService {
 			user: UserRepository;
 			pendingRegistration: PendingRegistrationRepository;
 			emailChange: EmailChangeRepository;
+			subscription: SubscriptionRepository;
 		}
 	) {}
+	public async getUserSubscriptions(user: User): Promise<Subscription[]> {
+		return this.repos.subscription.getUserSubscriptions(user);
+	}
+	public async subscribe(user: User, subUser: User) {
+		this.repos.subscription.subscribe(user, subUser);
+	}
+	public async unsubscribe(user: User, subUser: User) {
+		this.repos.subscription.unsubscribe(user, subUser);
+	}
+
 	public async updateProfileInfo(
 		email: string | undefined,
 		info: string | null | undefined,

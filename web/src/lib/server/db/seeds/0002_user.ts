@@ -15,11 +15,26 @@ export async function seed(db: Kysely<DB>): Promise<void> {
 				email: "user2@smolathon.clayenkitten.ru",
 				name: "Котолог",
 				surname: "Капибарович",
+				workplace: "ГДО",
+				phone: "+98761092385",
+				telegram: "@muse",
+				vk: "id2145131",
+				info: "Я художник, я так вижу. Я художник, я так вижу. Я художник, я так вижу. Я художник, я так вижу. Я художник, я так вижу. Я художник, я так вижу. Я художник, я так вижу. ",
+				personalSite: "Kapibara.com",
+				isCreator: true,
 				passwordHash: await argon2.hash("password")
 			},
 			{
 				email: "user3@smolathon.clayenkitten.ru",
 				name: "Котомор",
+				surname: "Лысков",
+				workplace: "ЭФСШ",
+				phone: "+18761242383",
+				telegram: "@grabProfessionalism",
+				vk: "id2342",
+				info: "",
+				personalSite: "gegIndie.com",
+				isCreator: false,
 				passwordHash: await argon2.hash("password")
 			}
 		])
