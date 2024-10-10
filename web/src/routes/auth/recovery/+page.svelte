@@ -10,8 +10,8 @@
 	const recoverySchema = z.object({
 		email: z
 			.string()
-			.email("Некорректный адрес электронной почты")
-			.max(128, "Слишком длинный адрес")
+			.email("! Неверный формат почты")
+			.max(128, "! Слишком длинный адрес")
 	});
 
 	const { form, errors, enhance, validateForm } = superForm(
@@ -35,55 +35,44 @@
 </script>
 
 <main>
+	<div class="header">
+		<img src="/Password.svg" alt="" />
+	</div>
 	{#if confirmed === false}
-		<div class="header">
-			<h4>Восстановление пароля</h4>
-		</div>
 		<form use:enhance>
 			<div class="inputs">
 				<label class="input" for={undefined}>
-					<span>Email</span>
 					<Input
 						type="email"
-						placeholder="Email, к которому привязан ваш аккаунт"
+						placeholder="Почта"
 						bind:value={$form.email}
 						required
 						invalid={$errors.email ? true : false}
 					/>
-					{#if $errors.email}<span class="error">{$errors.email}</span>{/if}
+					<div class="warning">
+						{#if $errors.email}<span class="error">{$errors.email}</span>{/if}
+					</div>
 				</label>
 			</div>
-			<div class="buttons">
-				<a href="/auth/sign_in" class="button_text">
-					<img
-						src="/icons/Arrow.svg"
-						alt="button"
-						class="arrow"
-						style="transform:scale(-1, 1);"
-					/>
-					<span>Назад</span>
-				</a>
+			<div class="submit">
 				<Button
 					text="Продолжить"
 					kind="primary"
 					on:click={submit}
 					disabled={!valid}
 				/>
+				<div class="links">
+					<a href="/auth/sign_in">Вернуться</a>
+				</div>
 			</div>
 		</form>
 	{:else}
 		<div class="submitted">
-			<div class="header">
-				<h4>Восстановление пароля</h4>
-			</div>
 			<div class="info">
 				<span>
-					Мы отправили письмо с инструкциями по смене пароля на указанный Вами
-					email.
+					Письмо с инструкциями по смене пароля отправлено на указанную почту.
 				</span>
-				<a href="/auth/sign_in" class="button_primary">
-					<span>К странице входа</span>
-				</a>
+				<a href="/auth/sign_in" class="button_primary">К странице входа</a>
 			</div>
 		</div>
 	{/if}
@@ -93,34 +82,34 @@
 	main {
 		display: flex;
 		flex-direction: column;
-		gap: 24px;
-		flex: 1;
-		align-items: center;
-		color: var(--text);
-	}
-	h4 {
-		color: var(--text);
-		font: var(--H4);
-	}
-	.submitted {
-		display: flex;
-		flex-direction: column;
-		gap: 20px;
-		.info {
-			display: flex;
-			flex-direction: column;
-			gap: 28px;
-			span {
-				text-align: center;
-				font: var(--P1);
-			}
-		}
+		gap: 52px;
+		color: var(--black);
+		background-color: var(--white);
+		padding: 60px 200px 0px 125px;
 	}
 	form {
 		display: flex;
 		flex-direction: column;
-		align-items: center;
-		gap: 36px;
+		color: var(--text-note);
+		gap: 8px;
+		.submit {
+			display: flex;
+			flex-direction: column;
+			text-align: center;
+			gap: 20px;
+			.links {
+				align-items: center;
+			}
+		}
+	}
+	.inputs {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		.error {
+			color: var(--error);
+			font: var(--A);
+		}
 	}
 	.input {
 		display: flex;
@@ -129,94 +118,43 @@
 		text-align: left;
 		gap: 2px;
 		span {
-			font: var(--P2);
-			color: var(--text);
+			font: var(--A);
+			color: var(--black);
 		}
-		.error {
-			color: var(--error);
-			font: var(--P2);
+		.warning {
+			height: 24px;
+		}
+	}
+	a {
+		color: var(--black);
+		font: var(--B);
+		&:hover {
+			color: var(--primary-blue);
+		}
+		&:focus {
+			color: var(--primary-blue);
 		}
 	}
 	.buttons {
-		width: 100%;
 		display: flex;
-		align-items: center;
 		justify-content: space-between;
 	}
-	.button_text {
-		height: 52px;
-		padding: 14px 32px 14px 32px;
-		border-radius: 8px;
-		align-content: center;
-		font: var(--B);
+	.submitted {
 		display: flex;
-		align-items: center;
-		gap: 10px;
-		height: 24px;
-		padding: 4px 0 4px 0;
-		color: var(--primary);
-		background-color: var(--main-bg);
-		border: none;
-		text-decoration: none;
+		flex-direction: column;
+		gap: 20px;
 		text-align: center;
-
+		font: var(--T-bold);
+		color: var(--black);
+		width: 402px;
 		img {
-			filter: invert(25%) sepia(60%) saturate(2103%) hue-rotate(179deg)
-				brightness(99%) contrast(94%);
+			height: 116px;
 		}
-
-		&:hover {
-			color: var(--secondary);
-			fill: var(--secondary);
-			img {
-				filter: invert(77%) sepia(39%) saturate(283%) hue-rotate(161deg)
-					brightness(100%) contrast(90%);
-			}
-		}
-
-		&:focus {
-			color: var(--primary);
-			img {
-				filter: invert(25%) sepia(60%) saturate(2103%) hue-rotate(179deg)
-					brightness(99%) contrast(94%);
-			}
-		}
-
-		&:disabled {
-			color: var(--text-note);
-			cursor: not-allowed;
-			img {
-				filter: invert(82%) sepia(8%) saturate(41%) hue-rotate(316deg)
-					brightness(87%) contrast(98%);
-			}
-		}
-	}
-	.button_primary {
-		height: 52px;
-		padding: 14px 32px 14px 32px;
-		border-radius: 8px;
-		align-content: center;
-		font: var(--B);
-		color: var(--main-bg);
-		background-color: var(--primary);
-		border: none;
-		text-decoration: none;
-		text-align: center;
-
-		&:hover {
-			color: var(--text);
-			background-color: var(--secondary);
-		}
-
-		&:focus {
-			color: var(--main-bg);
-			background-color: var(--primary);
-		}
-
-		&:disabled {
-			color: var(--text-disabled);
-			background-color: var(--text-note);
-			cursor: not-allowed;
+		.info {
+			display: flex;
+			flex-direction: column;
+			gap: 32px;
+			font: var(--T);
 		}
 	}
 </style>

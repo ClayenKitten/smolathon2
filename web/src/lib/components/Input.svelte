@@ -59,7 +59,6 @@
 		padding: 16px 24px 16px 24px;
 	}
 	input {
-		width: var(--input-width, 292px);
 		color: var(--black);
 		background: none;
 		border: none;

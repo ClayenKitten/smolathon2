@@ -4,16 +4,14 @@
 
 <main>
 	<div class="header">
-		<h4>Почта подтверждена</h4>
+		<img src="/Register.svg" alt="" />
 	</div>
 	<div class="info">
-		<span>
-			Ваша электронная почта подтверждена! Пожалуйста, войдите в аккаунт, чтобы
-			начать работу.
-		</span>
-		<a href="/auth/sign_in" class="button">
-			<span>К странице входа</span>
-		</a>
+		<div class="confirmed">
+			<span> Регистрация подтверждена </span>
+			<img src="/Confirmed.svg" alt="" />
+		</div>
+		<a href="/auth/sign_in" class="button">На главную</a>
 	</div>
 </main>
 
@@ -21,50 +19,45 @@
 	main {
 		display: flex;
 		flex-direction: column;
-		gap: 20px;
-		flex: 1;
-		align-items: center;
-		color: var(--text);
-	}
-	h4 {
-		color: var(--text);
-		font: var(--H4);
-	}
-	.info {
-		display: flex;
-		flex-direction: column;
-		gap: 28px;
-		span {
-			text-align: center;
-			font: var(--P1);
+		gap: 60px;
+		color: var(--black);
+		background-color: var(--white);
+		padding: 60px 200px 0px 125px;
+		text-align: center;
+		.info {
+			display: flex;
+			flex-direction: column;
+			gap: 32px;
+			font: var(--T);
+			.confirmed {
+				display: flex;
+				flex-direction: column;
+				gap: 20px;
+				font: var(--T-bold);
+				img {
+					height: 116px;
+				}
+			}
 		}
 	}
-	.button {
+	a {
 		height: 52px;
 		padding: 14px 32px 14px 32px;
-		border-radius: 8px;
 		align-content: center;
-		font: var(--B);
-		color: var(--main-bg);
-		background-color: var(--primary);
-		border: none;
+		font: var(--T-bold);
 		text-decoration: none;
-		text-align: center;
+		color: var(--white);
+		background-color: var(--primary-blue);
+		border: none;
 
 		&:hover {
-			color: var(--text);
-			background-color: var(--secondary);
+			color: var(--black);
+			background-color: var(--primary-yellow);
 		}
 
 		&:focus {
-			color: var(--main-bg);
-			background-color: var(--primary);
-		}
-
-		&:disabled {
-			color: var(--text-disabled);
-			background-color: var(--text-note);
-			cursor: not-allowed;
+			color: var(--black);
+			background-color: var(--primary-yellow);
 		}
 	}
 </style>

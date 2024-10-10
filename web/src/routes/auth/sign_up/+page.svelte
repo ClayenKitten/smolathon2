@@ -9,7 +9,11 @@
 	import { zod } from "sveltekit-superforms/adapters";
 
 	const signUpSchema = z.object({
-		name: z
+		firstName: z
+			.string()
+			.min(1, "! Это поле не должно быть пустым")
+			.max(128, "! Слишком длинное имя"),
+		lastName: z
 			.string()
 			.min(1, "! Это поле не должно быть пустым")
 			.max(128, "! Слишком длинное имя"),
@@ -40,7 +44,8 @@
 	async function create() {
 		await api($page).user.account.register.mutate({
 			email: $form.email,
-			name: $form.name,
+			firstName: $form.firstName,
+			lastName: $form.lastName,
 			password: $form.password
 		});
 		submitted = true;
@@ -64,19 +69,32 @@
 				<label class="input" for={undefined}>
 					<Input
 						type="text"
-						placeholder="Ваше имя"
-						bind:value={$form.name}
+						placeholder="Имя*"
+						bind:value={$form.firstName}
 						required
-						invalid={$errors.name ? true : false}
+						invalid={$errors.firstName ? true : false}
 					/>
 					<div class="warning">
-						{#if $errors.name}<span class="error">{$errors.name}</span>{/if}
+						{#if $errors.firstName}<span class="error">{$errors.firstName}</span
+							>{/if}
+					</div>
+				</label>
+				<label class="input" for={undefined}>
+					<Input
+						type="text"
+						placeholder="Фамилия"
+						bind:value={$form.lastName}
+						invalid={$errors.lastName ? true : false}
+					/>
+					<div class="warning">
+						{#if $errors.lastName}<span class="error">{$errors.lastName}</span
+							>{/if}
 					</div>
 				</label>
 				<label class="input" for={undefined}>
 					<Input
 						type="email"
-						placeholder="Ваш email"
+						placeholder="Почта*"
 						bind:value={$form.email}
 						required
 						invalid={$errors.email ? true : false}
@@ -88,7 +106,7 @@
 				<label class="input" for={undefined}>
 					<Input
 						type="password"
-						placeholder="Ваш пароль"
+						placeholder="Пароль*"
 						bind:value={$form.password}
 						required
 						invalid={$errors.password ? true : false}
@@ -101,7 +119,7 @@
 				<label class="input" for={undefined}>
 					<Input
 						type="password"
-						placeholder="Повторите  пароль"
+						placeholder="Повторите пароль*"
 						bind:value={$form.repeat_password}
 						required
 						invalid={$form.password !== $form.repeat_password ||
@@ -130,18 +148,17 @@
 		</form>
 	{:else}
 		<div class="submitted">
-			<div class="finish">
-				<span class="info">
-					На адрес <span class="email">{$form.email}</span> было отправлено письмо
-					с инструкцией по активации аккаунта.
-				</span>
-				<a href="/auth/sign_in" class="button">
-					<span>К странице входа</span>
-				</a>
+			<span>Регистрация пока не подтверждена</span>
+			<div class="info">
+				<img src="/Unconfirmed.svg" alt="" />
+				<span
+					>На вашу почту была отправленна ссылка, перейдите по ней, чтобы
+					подтвердить регистрацию.</span
+				>
 			</div>
 			<Button
 				text="Сменить адрес электронной почты"
-				kind="text-left"
+				kind="link"
 				on:click={returning}
 			/>
 		</div>
@@ -169,16 +186,6 @@
 			gap: 20px;
 			.links {
 				align-items: center;
-				a {
-					color: var(--black);
-					font: var(--B);
-					&:hover {
-						color: var(--primary-blue);
-					}
-					&:focus {
-						color: var(--primary-blue);
-					}
-				}
 			}
 		}
 	}
@@ -203,6 +210,34 @@
 		}
 		.warning {
 			height: 24px;
+		}
+	}
+	a {
+		color: var(--black);
+		font: var(--B);
+		&:hover {
+			color: var(--primary-blue);
+		}
+		&:focus {
+			color: var(--primary-blue);
+		}
+	}
+	.submitted {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		text-align: center;
+		font: var(--T-bold);
+		color: var(--black);
+		width: 402px;
+		img {
+			height: 116px;
+		}
+		.info {
+			display: flex;
+			flex-direction: column;
+			gap: 32px;
+			font: var(--T);
 		}
 	}
 </style>

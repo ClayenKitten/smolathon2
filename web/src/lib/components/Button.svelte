@@ -1,5 +1,6 @@
 <script lang="ts">
-	export let kind: "primary" | "secondary" | "text" | "text-left" = "primary";
+	export let kind: "primary" | "secondary" | "link" | "text" | "text-left" =
+		"primary";
 	export let text: string;
 	export let disabled: boolean = false;
 </script>
@@ -8,6 +9,7 @@
 	type="button"
 	class:primary={kind === "primary"}
 	class:secondary={kind === "secondary"}
+	class:link={kind === "link"}
 	class:text={kind === "text"}
 	class:text-left={kind === "text-left"}
 	on:click
@@ -78,6 +80,19 @@
 				color: var(--text-note);
 				border-color: var(--text-note);
 				cursor: not-allowed;
+			}
+		}
+		&.link {
+			color: var(--black);
+			font: var(--B);
+			text-decoration: underline;
+			background-color: var(--white);
+			border: none;
+			&:hover {
+				color: var(--primary-blue);
+			}
+			&:focus {
+				color: var(--primary-blue);
 			}
 		}
 		&.text,

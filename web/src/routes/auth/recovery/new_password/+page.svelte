@@ -11,8 +11,8 @@
 	const newPasswordSchema = z.object({
 		password: z
 			.string()
-			.min(8, "Пароль должен содержать хотя бы 8 символов")
-			.max(128, "Слишком длинный пароль"),
+			.min(8, "! Пароль должен содержать хотя бы 8 символов")
+			.max(128, "! Слишком длинный пароль"),
 		repeat_password: z.string()
 	});
 
@@ -32,7 +32,7 @@
 	async function submit() {
 		let code = $page.url.searchParams.get("code");
 		if (code === null) {
-			error = "Некорректная ссылка.";
+			error = "! Некорректная ссылка.";
 			return;
 		}
 		let result = await api($page).user.account.confirmRecovery.mutate({
@@ -43,9 +43,9 @@
 			finish = true;
 		} else {
 			if (result.error === "EXPIRED") {
-				error = "Срок действия ссылки истёк.";
+				error = "! Срок действия ссылки истёк.";
 			} else if (result.error === "NOT_FOUND") {
-				error = "Некорректная ссылка.";
+				error = "! Некорректная ссылка.";
 			}
 		}
 	}
@@ -61,29 +61,28 @@
 
 <main>
 	<div class="header">
-		<h4>Восстановление пароля</h4>
+		<img src="/Password.svg" alt="" />
 	</div>
 	{#if !finish && !error}
 		<form use:enhance>
 			<div class="inputs">
 				<label class="input" for={undefined}>
-					<span>Пароль</span>
 					<Input
 						type="password"
-						placeholder="Ваш пароль"
+						placeholder="Пароль"
 						bind:value={$form.password}
 						required
 						invalid={$errors.password ? true : false}
 					/>
-					{#if $errors.password}
-						<span class="error">{$errors.password}</span>
-					{/if}
+					<div class="warning">
+						{#if $errors.password}<span class="error">{$errors.password}</span
+							>{/if}
+					</div>
 				</label>
 				<label class="input" for={undefined}>
-					<span>Повторите пароль</span>
 					<Input
 						type="password"
-						placeholder="Повторите  пароль"
+						placeholder="Повторите пароль"
 						bind:value={$form.repeat_password}
 						required
 						invalid={$form.password !== $form.repeat_password ||
@@ -91,9 +90,11 @@
 							? true
 							: false}
 					/>
-					{#if $form.password !== $form.repeat_password}
-						<span class="error">Пароли не совпадают</span>
-					{/if}
+					<div class="warning">
+						{#if $form.password !== $form.repeat_password}<span class="error"
+								>! Пароли не совпадают</span
+							>{/if}
+					</div>
 				</label>
 			</div>
 			<Button
@@ -117,40 +118,25 @@
 	main {
 		display: flex;
 		flex-direction: column;
-		gap: 24px;
-		flex: 1;
-		align-items: center;
-		color: var(--text);
-		span {
-			font: var(--P2);
-			color: var(--text);
-		}
-		.error {
-			color: var(--error);
-			font: var(--P2);
-		}
-	}
-	.finish {
-		display: flex;
-		flex-direction: column;
-		gap: 28px;
-		text-align: center;
-		width: 100%;
-	}
-	h4 {
-		color: var(--text);
-		font: var(--H4);
+		gap: 52px;
+		color: var(--black);
+		background-color: var(--white);
+		padding: 60px 200px 0px 125px;
 	}
 	form {
 		display: flex;
 		flex-direction: column;
 		color: var(--text-note);
-		gap: 36px;
+		gap: 8px;
 	}
 	.inputs {
 		display: flex;
 		flex-direction: column;
-		gap: 16px;
+		gap: 8px;
+		.error {
+			color: var(--error);
+			font: var(--A);
+		}
 	}
 	.input {
 		display: flex;
@@ -159,12 +145,34 @@
 		text-align: left;
 		gap: 2px;
 		span {
-			font: var(--P2);
-			color: var(--text);
+			font: var(--A);
+			color: var(--black);
 		}
-		.error {
-			color: var(--error);
-			font: var(--P2);
+		.warning {
+			height: 24px;
+		}
+	}
+	a {
+		color: var(--black);
+		font: var(--B);
+		&:hover {
+			color: var(--primary-blue);
+		}
+		&:focus {
+			color: var(--primary-blue);
+		}
+	}
+	.error {
+		color: var(--error);
+		font: var(--A);
+	}
+	.finish {
+		display: flex;
+		flex-direction: column;
+		text-align: center;
+		gap: 20px;
+		.links {
+			align-items: center;
 		}
 	}
 </style>

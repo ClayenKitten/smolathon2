@@ -4,7 +4,7 @@
 		<div class="header">
 			<div class="logo">
 				<img src="/Logo.svg" alt="logo" />
-				<img src="/Ukras1.svg" alt="" />
+				<img class="icon" src="/Ukras1.svg" alt="" />
 			</div>
 			<span>Креативный сервис из Смоленска: соединяем таланты с идеями</span>
 		</div>
@@ -43,6 +43,12 @@
 			.logo {
 				display: flex;
 				gap: 32px;
+				.icon {
+					transition: transform 0.7s ease-in-out;
+				}
+				&:hover > .icon {
+					transform: rotate(360deg);
+				}
 			}
 		}
 		.slogans {
