@@ -7,7 +7,7 @@ export default function getProfileRouter() {
 	return router({
 		showProfileInfo: publicProcedure
 			.input(z.object({ userId: z.number() }))
-			.mutation(async ({ ctx, input }) => {
+			.query(async ({ ctx, input }) => {
 				let user = await ctx.repositories.user.findById(input.userId);
 				return await ctx.services.user.showProfile(user);
 			}),
