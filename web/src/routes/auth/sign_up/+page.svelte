@@ -13,10 +13,7 @@
 			.string()
 			.min(1, "! Это поле не должно быть пустым")
 			.max(128, "! Слишком длинное имя"),
-		lastName: z
-			.string()
-			.min(1, "! Это поле не должно быть пустым")
-			.max(128, "! Слишком длинное имя"),
+		lastName: z.string().max(128, "! Слишком длинное имя"),
 		email: z
 			.string()
 			.email("! Неверный формат почты")
@@ -45,7 +42,7 @@
 		await api($page).user.account.register.mutate({
 			email: $form.email,
 			name: $form.firstName,
-			surname: $form.lastName,
+			surname: $form.lastName === "" ? null : $form.lastName,
 			password: $form.password
 		});
 		submitted = true;
