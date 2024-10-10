@@ -6,6 +6,7 @@ import { Email, Name, Password, Code, Url } from "./common";
 export const Registration = z.object({
 	email: Email,
 	name: Name,
+	surname: Name.nullable(),
 	password: Password
 });
 export type Registration = TypeOf<typeof Registration>;
@@ -33,6 +34,7 @@ export type RecoveryConfirmation = TypeOf<typeof RecoveryConfirmation>;
 export const ProfileInfo = z.object({
 	email: Email,
 	name: Name
+	//TODO add surname
 });
 export type ProfileInfo = TypeOf<typeof ProfileInfo>;
 

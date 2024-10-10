@@ -83,22 +83,7 @@ export class PostRepository extends DbRepository {
 				"user.name as userName",
 				"post.attachments"
 			])
-			.execute()
-			.then(posts =>
-				posts.map(post => {
-					let { attachments, ...newPost } = post;
-					let attachments2 = attachments as m.Attachment[];
-					console.log(attachments2);
-					return {
-						...newPost,
-						image:
-							attachments2.find(attachment => attachment.type === "image") ??
-							null,
-						video: attachments2.find(x => x.type === "video") ?? null,
-						audio: attachments2.find(y => y.type === "audio") ?? null
-					};
-				})
-			);
+			.execute();
 	}
 
 	public async findById(id: number): Promise<Post> {

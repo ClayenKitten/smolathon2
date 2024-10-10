@@ -44,8 +44,8 @@
 	async function create() {
 		await api($page).user.account.register.mutate({
 			email: $form.email,
-			firstName: $form.firstName,
-			lastName: $form.lastName,
+			name: $form.firstName,
+			surname: $form.lastName,
 			password: $form.password
 		});
 		submitted = true;
