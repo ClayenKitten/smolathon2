@@ -25,6 +25,8 @@
 	.page {
 		display: flex;
 		height: 100%;
+		justify-content: space-between;
+		background-color: var(--white);
 	}
 	.sidebar {
 		width: 476px;

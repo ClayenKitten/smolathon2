@@ -46,50 +46,43 @@
 </script>
 
 <main>
+	<div class="header">
+		<img src="/Enter.svg" alt="" />
+	</div>
 	<form use:enhance>
-		<div class="header">
-			<img src="/Enter.svg" alt="" />
-		</div>
-		<div class="form">
-			<div class="inputs">
-				<label class="input" for={undefined}>
-					<Input
-						type="email"
-						placeholder="Почта"
-						bind:value={$form.email}
-						required
-						invalid={$errors.email ? true : false}
-					/>
-					<div class="warning">
-						{#if $errors.email}<span class="error">{$errors.email}</span>{/if}
-					</div>
-				</label>
-				<label class="input" for={undefined}>
-					<Input
-						type="password"
-						placeholder="Пароль"
-						bind:value={$form.password}
-						required
-						invalid={$errors.password ? true : false}
-					/>
-					<div class="warning">
-						{#if error}
-							<span class="error">{error}</span>
-						{/if}
-					</div>
-				</label>
-			</div>
-			<div class="submit">
-				<Button
-					text="Войти"
-					kind="primary"
-					on:click={submit}
-					disabled={!valid}
+		<div class="inputs">
+			<label class="input" for={undefined}>
+				<Input
+					type="email"
+					placeholder="Почта"
+					bind:value={$form.email}
+					required
+					invalid={$errors.email ? true : false}
 				/>
-				<div class="links">
-					<a href="/auth/recovery">Забыли пароль?</a>
-					<a href="/auth/sign_up">Зарегистрироваться</a>
+				<div class="warning">
+					{#if $errors.email}<span class="error">{$errors.email}</span>{/if}
 				</div>
+			</label>
+			<label class="input" for={undefined}>
+				<Input
+					type="password"
+					placeholder="Пароль"
+					bind:value={$form.password}
+					required
+					invalid={$errors.password ? true : false}
+				/>
+				<div class="warning">
+					{#if error}
+						<span class="error">{error}</span>
+					{/if}
+				</div>
+			</label>
+		</div>
+		<div class="submit">
+			<Button text="Войти" kind="primary" on:click={submit} disabled={!valid} />
+			<div class="links">
+				<a href="/auth/recovery">Забыли пароль?</a>
+				<a href="/auth/sign_up">Зарегистрироваться</a>
 			</div>
 		</div>
 	</form>
@@ -98,28 +91,17 @@
 <style lang="scss">
 	main {
 		display: flex;
-		flex: 1;
+		flex-direction: column;
+		gap: 170px;
 		color: var(--black);
 		background-color: var(--white);
+		padding: 60px 200px 0px 125px;
 	}
 	form {
 		display: flex;
 		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		gap: 170px;
-		background-color: var(--white);
-		padding: 0px 200px 0px 125px;
-	}
-	.form {
-		display: flex;
-		flex-direction: column;
 		color: var(--text-note);
 		gap: 46px;
-		.error {
-			color: var(--error);
-			font: var(--A);
-		}
 		.submit {
 			display: flex;
 			flex-direction: column;
@@ -145,6 +127,10 @@
 		display: flex;
 		flex-direction: column;
 		gap: 8px;
+		.error {
+			color: var(--error);
+			font: var(--A);
+		}
 	}
 	.input {
 		display: flex;

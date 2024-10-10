@@ -153,7 +153,6 @@
 		display: flex;
 		flex-direction: column;
 		gap: 52px;
-		flex: 1;
 		color: var(--black);
 		background-color: var(--white);
 		padding: 60px 200px 0px 125px;
@@ -163,10 +162,6 @@
 		flex-direction: column;
 		color: var(--text-note);
 		gap: 8px;
-		.error {
-			color: var(--error);
-			font: var(--A);
-		}
 		.submit {
 			display: flex;
 			flex-direction: column;
@@ -190,7 +185,11 @@
 	.inputs {
 		display: flex;
 		flex-direction: column;
-		gap: px;
+		gap: 8px;
+		.error {
+			color: var(--error);
+			font: var(--A);
+		}
 	}
 	.input {
 		display: flex;
