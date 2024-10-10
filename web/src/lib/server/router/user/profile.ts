@@ -5,10 +5,12 @@ import { z } from "zod";
 
 export default function getProfileRouter() {
 	return router({
-		showProfileInfo: protectedProcedure.mutation(async ({ ctx }) => {
-			var userId = ctx.session.user.id;
-			return await ctx.services.user.showProfile(userId);
-		})
+		showProfileInfo: publicProcedure
+			.input(z.object({ userId: z.number() }))
+			.mutation(async ({ ctx, input }) => {
+				let user = await ctx.repositories.user.findById(input.userId);
+				return await ctx.services.user.showProfile(user);
+			})
 		/*updateProfileInfo: protectedProcedure
 			.input(z.object({ name: z.string(), no }))
 			.mutation(async ({ ctx }) => {

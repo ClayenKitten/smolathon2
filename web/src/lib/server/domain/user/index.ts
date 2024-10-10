@@ -89,10 +89,8 @@ export class UserService {
 	public async updateProfile() {
 		//TODO fix user profile
 	}
-	public async showProfile(userId: number) {
-		//TODO fix user profile
-		let user = await this.repos.user.findById(userId);
-		return user;
+	public async showProfile(user: User): Promise<m.ProfileInfo> {
+		return this.repos.user.showProfile(user);
 	}
 
 	public async register(dto: m.Registration) {
@@ -176,6 +174,25 @@ export class UserService {
 }
 
 export class UserRepository extends DbRepository {
+	public async showProfile(user: User) {
+		return (await this.db
+			.selectFrom("user")
+			.where("id", "=", user.id)
+			.select([
+				"name",
+				"surname",
+				"email",
+				"info",
+				"personalSite",
+				"phone",
+				"profilePic",
+				"telegram",
+				"vk",
+				"workplace"
+			])
+			.executeTakeFirst()) as m.ProfileInfo;
+	}
+
 	public async UpdateProfile(id: number, dto: Insertable<UserTable>) {
 		//TODO fix profile
 		delete dto.id;
