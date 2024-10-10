@@ -32,9 +32,52 @@ export class ChatService {
 	public async getChatMessages(chat: Chat): Promise<Message[]> {
 		return this.repos.message.getChatMessages(chat);
 	}
+
+	public async sendMessage(
+		content: string,
+		chatOne: Chat,
+		chatTwo: Chat,
+		date: Date | string
+	): Promise<Message> {
+		return this.repos.message.sendMessage(content, chatOne, chatTwo, date);
+	}
+	public async createNewChat(sender: User, recipient: User): Promise<Chat> {
+		return this.repos.chat.createNewChat(sender, recipient);
+	}
 }
 
 export class ChatRepository extends DbRepository {
+	public async createNewChat(sender: User, recipient: User): Promise<Chat> {
+		var userId = sender.id;
+		var otherUserId = recipient.id;
+		var dto: Insertable<ChatsTable> = {
+			userId,
+			otherUserId
+		};
+		let chat = await this.create(dto);
+		var userId = recipient.id;
+		var otherUserId = sender.id;
+		var dto: Insertable<ChatsTable> = {
+			userId,
+			otherUserId
+		};
+		await this.create(dto);
+		return chat;
+	}
+	public async findChatByRecipient(
+		sender: User,
+		recipient: User
+	): Promise<Chat> {
+		let record = await this.db
+			.selectFrom("chat")
+			.where("userId", "=", sender.id)
+			.where("otherUserId", "=", recipient.id)
+			.selectAll()
+			.executeTakeFirst();
+		if (record === undefined) throw new Error("chat id not found");
+		return Chat.fromRecord(record);
+	}
+
 	public async getUserChatWith(user: User): Promise<Chat[]> {
 		return this.db
 			.selectFrom("chat")
@@ -54,7 +97,7 @@ export class ChatRepository extends DbRepository {
 		return Chat.fromRecord(record);
 	}
 
-	public async create(dto: Insertable<ChatsTable>): Promise<Chat> {
+	private async create(dto: Insertable<ChatsTable>): Promise<Chat> {
 		let id = await this.db
 			.insertInto("chat")
 			.values(dto)

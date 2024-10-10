@@ -15,6 +15,11 @@ export async function seed(db: Kysely<DB>): Promise<void> {
 				email: "user2@smolathon.clayenkitten.ru",
 				name: "Котолог",
 				passwordHash: await argon2.hash("password")
+			},
+			{
+				email: "user3@smolathon.clayenkitten.ru",
+				name: "Котомор",
+				passwordHash: await argon2.hash("password")
 			}
 		])
 		.execute();

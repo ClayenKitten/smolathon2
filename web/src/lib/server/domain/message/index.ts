@@ -32,6 +32,36 @@ export class Message {
 }
 
 export class MessageRepository extends DbRepository {
+	public async sendMessage(
+		content: string,
+		chatOne: Chat,
+		chatTwo: Chat,
+		date: Date | string
+	): Promise<Message> {
+		var senderId = chatOne.userId;
+		var recipientId = chatOne.otherUserId;
+		var chatId = chatOne.id;
+		var dto: Insertable<MessageTable> = {
+			senderId,
+			recipientId,
+			chatId,
+			content,
+			date
+		};
+		let message = await this.create(dto);
+		var chatId = chatTwo.id;
+		var dto: Insertable<MessageTable> = {
+			senderId,
+			recipientId,
+			chatId,
+			content,
+			date
+		};
+		await this.create(dto);
+		return message;
+		//TODO затестить, что создается по сообщению в каждом чате
+	}
+
 	public async getChatMessages(chat: Chat): Promise<Message[]> {
 		return this.db
 			.selectFrom("message")
@@ -51,7 +81,7 @@ export class MessageRepository extends DbRepository {
 		return Message.fromRecord(record);
 	}
 
-	public async create(dto: Insertable<MessageTable>): Promise<Message> {
+	private async create(dto: Insertable<MessageTable>): Promise<Message> {
 		let id = await this.db
 			.insertInto("message")
 			.values(dto)
