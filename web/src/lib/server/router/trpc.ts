@@ -1,9 +1,10 @@
 import { initTRPC, TRPCError } from "@trpc/server";
 import type { Context } from "../context";
+import superjson from "superjson";
 
 const { router, procedure, createCallerFactory } = initTRPC
 	.context<Context>()
-	.create();
+	.create({ transformer: superjson });
 
 const publicProcedure = procedure.use(opts => {
 	opts.ctx.logger.debug("TRPC request", { type: opts.type, path: opts.path });
