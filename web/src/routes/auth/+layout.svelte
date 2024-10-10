@@ -2,10 +2,10 @@
 	<slot />
 	<div class="sidebar">
 		<div class="header">
-			<div class="logo">
+			<a class="logo" href="/">
 				<img src="/Logo.svg" alt="logo" />
 				<img class="icon" src="/Ukras1.svg" alt="" />
-			</div>
+			</a>
 			<span>Креативный сервис из Смоленска: соединяем таланты с идеями</span>
 		</div>
 		<div class="slogans">
