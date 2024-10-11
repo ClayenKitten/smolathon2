@@ -7,6 +7,9 @@ import { sequence } from "@sveltejs/kit/hooks";
 export const handle: Handle = sequence(
 	createTRPCHandle({
 		router: appRouter,
-		createContext
+		createContext,
+		onError: err => {
+			console.log(err.error);
+		}
 	})
 );
