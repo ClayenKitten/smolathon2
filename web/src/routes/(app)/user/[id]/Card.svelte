@@ -9,10 +9,10 @@
 	<Content {post} />
 	<div class="post">
 		<span>{post.header}</span>
-		<div class="user">
+		<a class="user" href="/user/{post.userId}">
 			<img src={`/s3/avatar/${post.userId}`} alt="" />
 			<span>{post.userName}</span>
-		</div>
+		</a>
 	</div>
 	<footer>
 		<div class="reaction">
@@ -54,6 +54,11 @@
 				display: flex;
 				gap: 8px;
 				align-items: center;
+				text-decoration: none;
+				color: var(--black);
+				&:hover {
+					text-decoration: underline;
+				}
 				img {
 					width: 24px;
 					height: 24px;
