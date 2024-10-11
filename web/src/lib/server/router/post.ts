@@ -18,14 +18,11 @@ export default function getPostRouter() {
 				})
 			)
 			.query(async ({ ctx, input }) => {
-				const currUser = ctx.session?.user;
-				if (currUser === undefined)
-					throw new TRPCError({ code: "UNAUTHORIZED" });
 				return await ctx.services.post.getFilteredPosts(
 					input.userId,
 					input.tags,
 					input.subscribed,
-					currUser
+					ctx.session?.user
 				);
 			}),
 		getUserPosts: publicProcedure
