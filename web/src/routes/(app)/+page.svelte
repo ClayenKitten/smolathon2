@@ -1,60 +1,98 @@
 <script lang="ts">
+	import type { PageData } from "./$types";
+	import Card from "./user/[id]/Card.svelte";
+
+	export let data: PageData;
 	let subscribed = false;
 </script>
 
-<aside>
-	<div class="buttons">
-		<button
-			class:subscribed={subscribed === false}
-			on:click={() => (subscribed = false)}>Всё</button
-		>
-		<button
-			class:subscribed={subscribed === true}
-			on:click={() => (subscribed = true)}>Подписки</button
-		>
-	</div>
-	<div class="tags">
-		{#if !subscribed}
-			<section>
-				<span>Дизайн</span>
-				<div class="group">
-					<button>Графичекий дизайн</button>
-					<button>UI/UX дизайн</button>
-					<button>Иллюстрация</button>
-					<button>Motion - дизайн</button>
-				</div>
-			</section>
-			<section>
-				<span>Звук</span>
-				<div class="group">
-					<button>Sound - дизайн</button>
-				</div>
-			</section>
-			<section>
-				<span>Сувениры</span>
-				<div class="group">
-					<button>Хэндмейд</button>
-				</div>
-			</section>
-			<section>
-				<span>Фото</span>
-				<div class="group">
-					<button>Фотосъёмка</button>
-					<button>Видеосъёмка</button>
-					<button>Творчество</button>
-				</div>
-			</section>
-		{:else}{/if}
-	</div>
-</aside>
+<div class="lenta">
+	<aside>
+		<div class="buttons">
+			<button
+				class:subscribed={subscribed === false}
+				on:click={() => (subscribed = false)}>Всё</button
+			>
+			<button
+				class:subscribed={subscribed === true}
+				on:click={() => (subscribed = true)}>Подписки</button
+			>
+		</div>
+		<div class="tags">
+			{#if !subscribed}
+				<section>
+					<span>Дизайн</span>
+					<div class="group">
+						<button>Графичекий дизайн</button>
+						<button>UI/UX дизайн</button>
+						<button>Иллюстрация</button>
+						<button>Motion - дизайн</button>
+					</div>
+				</section>
+				<section>
+					<span>Звук</span>
+					<div class="group">
+						<button>Sound - дизайн</button>
+					</div>
+				</section>
+				<section>
+					<span>Сувениры</span>
+					<div class="group">
+						<button>Хэндмейд</button>
+					</div>
+				</section>
+				<section>
+					<span>Фото</span>
+					<div class="group">
+						<button>Фотосъёмка</button>
+						<button>Видеосъёмка</button>
+						<button>Творчество</button>
+					</div>
+				</section>
+			{:else}{/if}
+		</div>
+	</aside>
+	<main>
+		<div>
+			{#each data.posts.filter((_, i) => i % 3 === 0) as post}
+				<Card {post} />
+			{/each}
+		</div>
+		<div>
+			{#each data.posts.filter((_, i) => i % 3 === 1) as post}
+				<Card {post} />
+			{/each}
+		</div>
+		<div>
+			{#each data.posts.filter((_, i) => i % 3 === 2) as post}
+				<Card {post} />
+			{/each}
+		</div>
+	</main>
+</div>
 
 <style lang="scss">
+	.lenta {
+		display: flex;
+		height: 100%;
+		gap: 20px;
+	}
 	aside {
 		width: 194px;
 		padding: 20px;
 		display: flex;
 		flex-direction: column;
 		gap: 20px;
+	}
+	main {
+		display: flex;
+		gap: 16px;
+		> div {
+			display: flex;
+			flex-direction: column;
+			gap: 16px;
+			width: 332px;
+		}
 	}
 	.buttons {
 		display: flex;
