@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { goto, invalidateAll } from "$app/navigation";
+	import { page } from "$app/stores";
+	import api from "$lib/api";
 	import Button from "$lib/components/Button.svelte";
 	import type { ProfileInfo } from "$lib/models";
 
@@ -62,20 +65,32 @@
 		</ul>
 	</section>
 	<section class="actions">
-		{#if profile.isCreator}
-			<a class="profi" href="https://profi.ru/">Заказать на profi.ru</a>
-		{/if}
-		<Button text="Написать" kind="primary" />
-		{#if profile.isCreator}
-			<Button text="Поддержать художника" kind="secondary" />
-		{:else}
+		{#if user && profile.id === user.id}
 			<Button
-				kind="secondary"
-				text="Стать креатором"
-				on:click={() =>
-					(window.location.href =
-						"https://docs.google.com/forms/d/e/1FAIpQLSeuLud6Amo7Fz88Y769MlplRuJQULeW8MxVSnZJrswbT6bvEg/viewform?usp=sf_link")}
+				kind="primary"
+				text="Выйти"
+				on:click={async () => {
+					await api($page).user.session.logout.mutate();
+					await invalidateAll();
+					await goto("/");
+				}}
 			/>
+		{:else}
+			{#if profile.isCreator}
+				<a class="profi" href="https://profi.ru/">Заказать на profi.ru</a>
+			{/if}
+			<Button text="Написать" kind="primary" />
+			{#if profile.isCreator}
+				<Button text="Поддержать художника" kind="secondary" />
+			{:else}
+				<Button
+					kind="secondary"
+					text="Стать креатором"
+					on:click={() =>
+						(window.location.href =
+							"https://docs.google.com/forms/d/e/1FAIpQLSeuLud6Amo7Fz88Y769MlplRuJQULeW8MxVSnZJrswbT6bvEg/viewform?usp=sf_link")}
+				/>
+			{/if}
 		{/if}
 	</section>
 </aside>

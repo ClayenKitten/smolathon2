@@ -21,7 +21,7 @@
 		<nav>
 			<a href="/">Лента</a>
 			<a href="/events">Мероприятия</a>
-			<a href="/info">Витрина возможностей</a>
+			<a href="/opportunities">Витрина возможностей</a>
 			<div class="search">
 				<input placeholder="Поиск по работам" />
 				<img src="/Icons/Search.svg" alt="" />
@@ -86,6 +86,10 @@
 			}
 			.search {
 				position: relative;
+				max-width: 300px;
+				> input {
+					width: 100%;
+				}
 				img {
 					position: absolute;
 					top: 11px;
