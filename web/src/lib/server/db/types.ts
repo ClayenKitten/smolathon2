@@ -93,6 +93,11 @@ export interface Subscription {
   userId: number;
 }
 
+export interface Tag {
+  id: Generated<number>;
+  name: string;
+}
+
 export interface User {
   email: string;
   id: Generated<number>;
@@ -119,5 +124,6 @@ export interface DB {
   productOwnership: ProductOwnership;
   session: Session;
   subscription: Subscription;
+  tag: Tag;
   user: User;
 }
