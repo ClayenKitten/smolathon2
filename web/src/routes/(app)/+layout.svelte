@@ -13,10 +13,14 @@
 			<a href="/">Лента</a>
 			<a href="/events">Мероприятия</a>
 			<a href="/info">Витрина возможностей</a>
-			<input type="search" placeholder="Поиск по работам" />
+			<div class="search">
+				<input placeholder="Поиск по работам" />
+				<img src="/Icons/Search.svg" alt="" />
+			</div>
 		</nav>
 		<menu>
 			{#if data.user}
+				<img class="email" src="/Icons/Email.svg" alt="" />
 				<a href={`/user/${data.user.id}`}>
 					<img src={`/s3/avatar/${data.user.id}`} alt="Профиль" />
 				</a>
@@ -56,18 +60,39 @@
 				font: var(--T-bold);
 				text-decoration: none;
 			}
+			.search {
+				position: relative;
+				img {
+					position: absolute;
+					top: 11px;
+					right: 15px;
+				}
+				&:hover {
+					img {
+						filter: var(--filter-blue);
+					}
+				}
+			}
 		}
 		input {
 			padding: 8px 12px;
+			height: 40px;
+			width: 527px;
 		}
 		menu {
 			display: flex;
 			margin-left: auto;
+			align-items: center;
 			gap: 16px;
 			img {
 				width: 40px;
 				height: 40px;
 				border-radius: 100px;
+			}
+			.email {
+				width: 20px;
+				height: 16px;
+				filter: var(--filter-blue);
 			}
 			.login > :global(button) {
 				width: 77px;
