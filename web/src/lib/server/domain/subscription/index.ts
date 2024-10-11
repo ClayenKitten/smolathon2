@@ -2,6 +2,7 @@ import DbRepository from "../../db/repository";
 import type { Insertable, Selectable, Updateable } from "kysely";
 import type { Subscription as SubscriptionTable } from "$lib/server/db/types";
 import type { User } from "../user";
+import type { Subscriber } from "$lib/models";
 
 export class Subscription {
 	constructor(
@@ -42,6 +43,14 @@ export class SubscriptionRepository extends DbRepository {
 			.where("userId", "=", user.id)
 			.where("subId", "=", subUser.id)
 			.execute();
+	}
+	public async getUserSubscribers(user: User): Promise<Subscriber[]> {
+		let users = await this.db
+			.selectFrom("subscription")
+			.where("subscription.subId", "=", user.id)
+			.select(["userId as id"])
+			.execute();
+		return users;
 	}
 
 	public async getUserSubscriptions(user: User): Promise<Subscription[]> {

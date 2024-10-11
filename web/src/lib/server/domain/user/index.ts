@@ -92,6 +92,9 @@ export class UserService {
 			subscription: SubscriptionRepository;
 		}
 	) {}
+	public async getUserSubscribers(user: User): Promise<m.Subscriber[]> {
+		return this.repos.subscription.getUserSubscribers(user);
+	}
 	public async getUserSubscriptions(user: User): Promise<Subscription[]> {
 		return this.repos.subscription.getUserSubscriptions(user);
 	}

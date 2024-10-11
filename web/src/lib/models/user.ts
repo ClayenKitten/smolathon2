@@ -45,3 +45,8 @@ export const ProfileInfo = z.object({
 	isCreator: z.boolean()
 });
 export type ProfileInfo = TypeOf<typeof ProfileInfo>;
+
+export const Subscriber = z.object({
+	id: z.number()
+});
+export type Subscriber = TypeOf<typeof Subscriber>;

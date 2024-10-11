@@ -23,6 +23,10 @@ export default function getSubscriptionRouter() {
 				let user = await ctx.repositories.user.findById(ctx.session.user.id);
 				let subUser = await ctx.repositories.user.findById(input.subId);
 				return await ctx.services.user.unsubscribe(user, subUser);
-			})
+			}),
+		getUserSubscribers: protectedProcedure.query(async ({ ctx }) => {
+			let user = await ctx.repositories.user.findById(ctx.session.user.id);
+			return await ctx.services.user.getUserSubscribers(user);
+		})
 	});
 }
