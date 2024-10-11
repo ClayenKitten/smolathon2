@@ -46,6 +46,12 @@ export interface Event {
   userId: number;
 }
 
+export interface EventTag {
+  eventId: number;
+  id: Generated<number>;
+  tagId: number;
+}
+
 export interface Message {
   chatId: number;
   content: string;
@@ -133,6 +139,7 @@ export interface DB {
   chat: Chat;
   emailChangeRequest: EmailChangeRequest;
   event: Event;
+  eventTag: EventTag;
   message: Message;
   passwordRecovery: PasswordRecovery;
   pendingRegistration: PendingRegistration;
