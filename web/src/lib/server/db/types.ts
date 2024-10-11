@@ -98,11 +98,6 @@ export interface Product {
   title: string;
 }
 
-export interface ProductOwnership {
-  productId: number;
-  userId: number;
-}
-
 export interface Session {
   expires: Timestamp;
   token: string;
@@ -146,7 +141,6 @@ export interface DB {
   post: Post;
   postTag: PostTag;
   product: Product;
-  productOwnership: ProductOwnership;
   session: Session;
   subscription: Subscription;
   tag: Tag;

@@ -7,8 +7,6 @@ export async function seed(db: Kysely<DB>): Promise<void> {
 		"post",
 		"message",
 		"chat",
-		"productOwnership",
-		"product",
 		"passwordRecovery",
 		"emailChangeRequest",
 		"pendingRegistration",
