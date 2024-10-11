@@ -141,6 +141,9 @@
 		&.tags {
 			flex-direction: column;
 			justify-content: start;
+			h2 {
+				align-self: start;
+			}
 			ul {
 				display: flex;
 				flex-wrap: wrap;
