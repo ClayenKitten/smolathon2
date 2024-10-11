@@ -10,6 +10,7 @@ import { SessionService } from "../domain/user/session";
 import { ProductService } from "../domain/product/index";
 import { ChatService } from "../domain/chat";
 import { PostService } from "../domain/post";
+import { PostTagRepository } from "../domain/posttag";
 
 export default function createServices(repos: Repositories) {
 	let s = {};

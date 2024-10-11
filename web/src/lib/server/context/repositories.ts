@@ -11,6 +11,7 @@ import { ChatRepository } from "../domain/chat";
 import { MessageRepository } from "../domain/message";
 import { PostRepository } from "../domain/post";
 import { SubscriptionRepository } from "../domain/subscription";
+import { PostTagRepository } from "../domain/posttag";
 
 export default function createRepositories(db: Kysely<DB>, s3: Minio) {
 	return {
@@ -23,6 +24,7 @@ export default function createRepositories(db: Kysely<DB>, s3: Minio) {
 		chat: new ChatRepository(db),
 		message: new MessageRepository(db),
 		post: new PostRepository(db),
+		posttag: new PostTagRepository(db),
 		subscription: new SubscriptionRepository(db)
 	};
 }

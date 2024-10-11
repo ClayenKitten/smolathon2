@@ -16,7 +16,8 @@ export default function getPostRouter() {
 				z.object({
 					header: z.string(),
 					content: z.string(),
-					attachments: Attachment
+					attachments: Attachment,
+					tags: z.array(z.number())
 				})
 			)
 			.query(async ({ ctx, input }) => {
@@ -26,7 +27,8 @@ export default function getPostRouter() {
 					input.content,
 					ctx.session.user,
 					date,
-					input.attachments
+					input.attachments,
+					input.tags
 				);
 			})
 	});

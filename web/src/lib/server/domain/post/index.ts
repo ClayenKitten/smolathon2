@@ -1,9 +1,13 @@
 import DbRepository from "../../db/repository";
 import * as m from "$lib/models";
 import type { Insertable, Selectable, Updateable } from "kysely";
-import type { Post as PostTable } from "$lib/server/db/types";
+import type {
+	Post as PostTable,
+	PostTag as PostTagTable
+} from "$lib/server/db/types";
 import type { User } from "../user";
 import { PostPreview } from "$lib/models/post";
+import type { PostTagRepository } from "../posttag";
 
 export class Post {
 	constructor(
@@ -40,7 +44,9 @@ export class Post {
 }
 
 export class PostService {
-	constructor(private repos: { post: PostRepository }) {}
+	constructor(
+		private repos: { post: PostRepository; posttag: PostTagRepository }
+	) {}
 
 	public async getUserPosts(user: User): Promise<PostPreview[]> {
 		return this.repos.post.getUserPosts(user);
@@ -51,16 +57,26 @@ export class PostService {
 		content: string | null,
 		user: User,
 		date: Date | string,
-		attachments: m.Attachment
+		attachments: m.Attachment,
+		tags: number[]
 	) {
-		var userId = user.id;
-		var dto: Insertable<PostTable> = {
+		let userId = user.id;
+		let dto: Insertable<PostTable> = {
 			header,
 			content,
 			userId,
 			date,
 			attachments
 		};
+		let newPost = await this.repos.post.create(dto);
+		tags.forEach(async tagId => {
+			let dto1: Insertable<PostTagTable> = {
+				postId: newPost.id,
+				tagId: tagId
+			};
+			await this.repos.posttag.create(dto1);
+		});
+
 		return this.repos.post.create(dto);
 	}
 }
