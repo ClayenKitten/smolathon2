@@ -79,9 +79,53 @@ export class PostService {
 
 		return this.repos.post.create(dto);
 	}
+	public async getFilteredPosts(
+		userId: number | undefined,
+		tags: number[] | undefined,
+		subscribed: boolean | undefined,
+		currUser: User | undefined
+	): Promise<PostPreview[]> {
+		return this.repos.post.getFilteredPosts(userId, tags, subscribed, currUser);
+	}
 }
 
 export class PostRepository extends DbRepository {
+	public async getFilteredPosts(
+		userId: number | undefined,
+		tags: number[] | undefined,
+		subscribed: boolean | undefined,
+		currUser: User | undefined
+	): Promise<PostPreview[]> {
+		let posts = await this.db
+			.selectFrom("post")
+			.leftJoin("subscription", "post.userId", "subscription.subId")
+			.leftJoin("postTag", "post.id", "postTag.postId")
+			.leftJoin("user", "post.userId", "user.id")
+			.selectAll()
+			.execute();
+		if (userId !== undefined) {
+			posts = posts.filter(post => post.userId === userId);
+		} else {
+			if (subscribed === true && currUser !== undefined) {
+				posts = posts.filter(post => post.userId === currUser.id);
+			}
+			if (tags?.length !== 0 && tags !== undefined) {
+				tags.forEach(async tagId => {
+					posts = posts.filter(post => post.tagId === tagId);
+				});
+			}
+		}
+		const postPreviews = posts.map(post => ({
+			header: post.header,
+			date: post.date,
+			userId: post.userId,
+			userName: post.name,
+			attachments: post.attachments
+		}));
+
+		return postPreviews as PostPreview[];
+	}
+
 	public async makePost(
 		header: string,
 		content: string | null,

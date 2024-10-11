@@ -1,9 +1,13 @@
 import DbRepository from "../../db/repository";
 import * as m from "$lib/models";
 import type { Insertable, Selectable, Updateable } from "kysely";
-import type { Event as EventTable } from "$lib/server/db/types";
+import type {
+	Event as EventTable,
+	EventTag as EventTagTable
+} from "$lib/server/db/types";
 import type { User } from "../user";
 import { EventPreview } from "$lib/models/event";
+import type { EventTagRepository } from "../eventtag";
 
 export class Event {
 	constructor(
@@ -44,11 +48,69 @@ export class Event {
 
 export class EventService {
 	constructor(
-		private repos: { Event: EventRepository; Eventtag: EventRepository }
+		private repos: { event: EventRepository; eventTag: EventTagRepository }
 	) {}
+
+	public async getUserEvents(user: User): Promise<EventPreview[]> {
+		return this.repos.event.getUserEvents(user);
+	}
+
+	public async makeEvent(
+		header: string,
+		content: string | null,
+		user: User,
+		date: string | null | undefined,
+		address: string | null | undefined,
+		attachments: m.Attachment,
+		tags: number[]
+	) {
+		let userId = user.id;
+		let dto: Insertable<EventTable> = {
+			header,
+			content,
+			userId,
+			date,
+			address,
+			attachments
+		};
+		let newPost = await this.repos.event.create(dto);
+		tags.forEach(async tagId => {
+			let dto1: Insertable<EventTagTable> = {
+				eventId: newPost.id,
+				tagId: tagId
+			};
+			await this.repos.eventTag.create(dto1);
+		});
+
+		return this.repos.event.create(dto);
+	}
 }
 
 export class EventRepository extends DbRepository {
+	public async makeEvent(
+		header: string,
+		content: string | null,
+		user: User,
+		date: string | null | undefined,
+		address: string | null | undefined,
+		attachments: m.Attachment
+	) {}
+	public async getUserEvents(user: User): Promise<EventPreview[]> {
+		return (await this.db
+			.selectFrom("event")
+			.where("userId", "=", user.id)
+			.innerJoin("user", "user.id", "event.userId")
+			.select([
+				"event.header",
+				"event.date",
+				"event.userId",
+				"user.name as userName",
+				"event.attachments",
+				"event.address"
+			])
+			.execute()) as EventPreview[];
+	}
+
 	public async findById(id: number): Promise<Event> {
 		let record = await this.db
 			.selectFrom("event")

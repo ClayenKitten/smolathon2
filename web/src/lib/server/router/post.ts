@@ -2,9 +2,29 @@ import { TRPCError } from "@trpc/server";
 import { protectedProcedure, publicProcedure, router } from "./trpc";
 import { z } from "zod";
 import { Attachment, Code } from "$lib/models";
+import { User } from "../domain/user";
 
 export default function getPostRouter() {
 	return router({
+		getPosts: publicProcedure
+			.input(
+				z.object({
+					userId: z.number().optional(),
+					tags: z.array(z.number()).optional(),
+					subscribed: z.boolean().optional()
+				})
+			)
+			.query(async ({ ctx, input }) => {
+				const currUser = ctx.session?.user;
+				if (currUser === undefined)
+					throw new TRPCError({ code: "UNAUTHORIZED" });
+				return await ctx.services.post.getFilteredPosts(
+					input.userId,
+					input.tags,
+					input.subscribed,
+					currUser
+				);
+			}),
 		getUserPosts: publicProcedure
 			.input(z.object({ userId: z.number() }))
 			.query(async ({ ctx, input }) => {
