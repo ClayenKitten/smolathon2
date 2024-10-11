@@ -45,11 +45,7 @@
 			background-color: var(--primary-blue);
 			border: none;
 
-			&:hover {
-				color: var(--black);
-				background-color: var(--primary-yellow);
-			}
-
+			&:hover,
 			&:focus {
 				color: var(--black);
 				background-color: var(--primary-yellow);
@@ -62,23 +58,19 @@
 			}
 		}
 		&.secondary {
-			color: var(--primary);
-			background-color: var(--main-bg);
-			border: 1px solid var(--primary);
+			color: var(--primary-blue);
+			background-color: var(--white);
+			border: 2px solid var(--primary-blue);
 
-			&:hover {
-				color: var(--secondary);
-				border-color: var(--secondary);
-			}
-
+			&:hover,
 			&:focus {
-				color: var(--primary);
-				border-color: var(--primary);
+				color: var(--white);
+				background-color: var(--primary-blue);
 			}
 
 			&:disabled {
-				color: var(--text-note);
-				border-color: var(--text-note);
+				color: var(--grey-deep);
+				background-color: var(--grey-light);
 				cursor: not-allowed;
 			}
 		}
