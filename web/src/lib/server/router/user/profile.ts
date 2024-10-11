@@ -6,9 +6,11 @@ import { z } from "zod";
 export default function getProfileRouter() {
 	return router({
 		showProfileInfo: publicProcedure
-			.input(z.object({ userId: z.number() }))
+			.input(z.object({ userId: z.number().optional() }))
 			.query(async ({ ctx, input }) => {
-				let user = await ctx.repositories.user.findById(input.userId);
+				let id = input.userId ?? ctx.session?.user.id;
+				if (id === undefined) throw new TRPCError({ code: "UNAUTHORIZED" });
+				let user = await ctx.repositories.user.findById(id);
 				return await ctx.services.user.showProfile(user);
 			}),
 		updateProfileInfo: protectedProcedure

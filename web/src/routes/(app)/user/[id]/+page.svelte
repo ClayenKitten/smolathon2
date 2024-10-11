@@ -16,8 +16,7 @@
 	<main>
 		<div>
 			{#each data.posts.filter((_, i) => i % 3 === 0) as post}
-				<EventCard {post} />
-				<!-- <Card {post} /> -->
+				<Card {post} />
 			{/each}
 		</div>
 		<div>
