@@ -11,6 +11,7 @@ import { ProductService } from "../domain/product/index";
 import { ChatService } from "../domain/chat";
 import { PostService } from "../domain/post";
 import { PostTagRepository } from "../domain/posttag";
+import { EventService } from "../domain/event";
 
 export default function createServices(repos: Repositories) {
 	let s = {};
@@ -26,6 +27,7 @@ export default function createServices(repos: Repositories) {
 	addProp(s, "product", new ProductService(repos));
 	addProp(s, "chat", new ChatService(repos));
 	addProp(s, "post", new PostService(repos));
+	addProp(s, "event", new EventService(repos));
 	return s;
 }
 export type Services = ReturnType<typeof createServices>;

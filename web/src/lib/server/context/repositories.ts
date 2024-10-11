@@ -12,6 +12,8 @@ import { MessageRepository } from "../domain/message";
 import { PostRepository } from "../domain/post";
 import { SubscriptionRepository } from "../domain/subscription";
 import { PostTagRepository } from "../domain/posttag";
+import { EventTagRepository } from "../domain/eventtag";
+import { EventRepository } from "../domain/event";
 
 export default function createRepositories(db: Kysely<DB>, s3: Minio) {
 	return {
@@ -25,7 +27,9 @@ export default function createRepositories(db: Kysely<DB>, s3: Minio) {
 		message: new MessageRepository(db),
 		post: new PostRepository(db),
 		posttag: new PostTagRepository(db),
-		subscription: new SubscriptionRepository(db)
+		subscription: new SubscriptionRepository(db),
+		eventTag: new EventTagRepository(db),
+		event: new EventRepository(db)
 	};
 }
 export type Repositories = ReturnType<typeof createRepositories>;

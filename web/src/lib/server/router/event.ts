@@ -4,12 +4,9 @@ import { z } from "zod";
 import { Attachment, Code } from "$lib/models";
 import { User } from "../domain/user";
 
-export default function getPostRouter() {
+export default function getEventRouter() {
 	return router({
-		getTags: publicProcedure.query(async ({ ctx }) => {
-			return await ctx.services.post.getTags();
-		}),
-		getPosts: publicProcedure
+		getEvents: publicProcedure
 			.input(
 				z.object({
 					userId: z.number().optional(),
@@ -21,37 +18,40 @@ export default function getPostRouter() {
 				const currUser = ctx.session?.user;
 				if (currUser === undefined)
 					throw new TRPCError({ code: "UNAUTHORIZED" });
-				return await ctx.services.post.getFilteredPosts(
+				return await ctx.services.event.getFilteredEvents(
 					input.userId,
 					input.tags,
 					input.subscribed,
 					currUser
 				);
 			}),
-		getUserPosts: publicProcedure
+		getUserEvents: publicProcedure
 			.input(z.object({ userId: z.number() }))
 			.query(async ({ ctx, input }) => {
 				var user = await ctx.repositories.user.findById(input.userId);
-				return await ctx.services.post.getUserPosts(user);
+				return await ctx.services.event.getUserEvents(user);
 			}),
-		makePost: protectedProcedure
+		makeEvent: protectedProcedure
 			.input(
 				z.object({
 					header: z.string(),
 					content: z.string(),
 					attachments: Attachment,
-					tags: z.array(z.number())
+					tags: z.array(z.number()),
+					date: z.string().optional(),
+					address: z.string().optional()
 				})
 			)
 			.query(async ({ ctx, input }) => {
 				const date = new Date();
-				return await ctx.services.post.makePost(
+				return await ctx.services.event.makeEvent(
 					input.header,
 					input.content,
 					ctx.session.user,
-					date,
+					input.date,
 					input.attachments,
-					input.tags
+					input.tags,
+					input.address
 				);
 			})
 	});

@@ -50,19 +50,17 @@ export class EventService {
 	constructor(
 		private repos: { event: EventRepository; eventTag: EventTagRepository }
 	) {}
-
 	public async getUserEvents(user: User): Promise<EventPreview[]> {
 		return this.repos.event.getUserEvents(user);
 	}
-
 	public async makeEvent(
 		header: string,
 		content: string | null,
 		user: User,
-		date: string | null | undefined,
-		address: string | null | undefined,
+		date: string | undefined | null,
 		attachments: m.Attachment,
-		tags: number[]
+		tags: number[],
+		address: string | undefined | null
 	) {
 		let userId = user.id;
 		let dto: Insertable<EventTable> = {
@@ -70,13 +68,13 @@ export class EventService {
 			content,
 			userId,
 			date,
-			address,
-			attachments
+			attachments,
+			address
 		};
-		let newPost = await this.repos.event.create(dto);
+		let newEvent = await this.repos.event.create(dto);
 		tags.forEach(async tagId => {
 			let dto1: Insertable<EventTagTable> = {
-				eventId: newPost.id,
+				eventId: newEvent.id,
 				tagId: tagId
 			};
 			await this.repos.eventTag.create(dto1);
@@ -84,17 +82,22 @@ export class EventService {
 
 		return this.repos.event.create(dto);
 	}
+	public async getFilteredEvents(
+		userId: number | undefined,
+		tags: number[] | undefined,
+		subscribed: boolean | undefined,
+		currUser: User | undefined
+	): Promise<EventPreview[]> {
+		return this.repos.event.getFilteredEvents(
+			userId,
+			tags,
+			subscribed,
+			currUser
+		);
+	}
 }
 
 export class EventRepository extends DbRepository {
-	public async makeEvent(
-		header: string,
-		content: string | null,
-		user: User,
-		date: string | null | undefined,
-		address: string | null | undefined,
-		attachments: m.Attachment
-	) {}
 	public async getUserEvents(user: User): Promise<EventPreview[]> {
 		return (await this.db
 			.selectFrom("event")
@@ -109,6 +112,42 @@ export class EventRepository extends DbRepository {
 				"event.address"
 			])
 			.execute()) as EventPreview[];
+	}
+	public async getFilteredEvents(
+		userId: number | undefined,
+		tags: number[] | undefined,
+		subscribed: boolean | undefined,
+		currUser: User | undefined
+	): Promise<EventPreview[]> {
+		let events = await this.db
+			.selectFrom("event")
+			.leftJoin("subscription", "event.userId", "subscription.subId")
+			.leftJoin("eventTag", "event.id", "eventTag.eventId")
+			.leftJoin("user", "event.userId", "user.id")
+			.selectAll()
+			.execute();
+		if (userId !== undefined) {
+			events = events.filter(event => event.userId === userId);
+		} else {
+			if (subscribed === true && currUser !== undefined) {
+				events = events.filter(event => event.userId === currUser.id);
+			}
+			if (tags?.length !== 0 && tags !== undefined) {
+				tags.forEach(async tagId => {
+					events = events.filter(event => event.tagId === tagId);
+				});
+			}
+		}
+		const eventPreviews = events.map(event => ({
+			header: event.header,
+			date: event.date,
+			userId: event.userId,
+			userName: event.name,
+			attachments: event.attachments,
+			address: event.address
+		}));
+
+		return eventPreviews as EventPreview[];
 	}
 
 	public async findById(id: number): Promise<Event> {

@@ -8,6 +8,7 @@ import type {
 import type { User } from "../user";
 import { PostPreview } from "$lib/models/post";
 import type { PostTagRepository } from "../posttag";
+import type { Z } from "vitest/dist/reporters-yx5ZTtEV.js";
 
 export class Post {
 	constructor(
@@ -87,9 +88,15 @@ export class PostService {
 	): Promise<PostPreview[]> {
 		return this.repos.post.getFilteredPosts(userId, tags, subscribed, currUser);
 	}
+	public async getTags(): Promise<m.Tag[]> {
+		return this.repos.post.getTags();
+	}
 }
 
 export class PostRepository extends DbRepository {
+	public async getTags(): Promise<m.Tag[]> {
+		return (await this.db.selectFrom("tag").selectAll().execute()) as m.Tag[];
+	}
 	public async getFilteredPosts(
 		userId: number | undefined,
 		tags: number[] | undefined,
