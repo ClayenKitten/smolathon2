@@ -15,6 +15,14 @@ export const PostPreview = z.object({
 });
 export type PostPreview = TypeOf<typeof PostPreview>;
 
+export const CreatePost = z.object({
+	header: z.string(),
+	content: z.string(),
+	attachments: Attachment,
+	tags: z.array(z.number())
+});
+export type CreatePost = TypeOf<typeof CreatePost>;
+
 export const Tag = z.object({
 	id: z.number(),
 	name: z.string()

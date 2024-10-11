@@ -17,7 +17,7 @@
 >
 	{#if kind === "text-left"}
 		<img
-			src="/icons/Arrow.svg"
+			src="/Icons/Arrow.svg"
 			alt="button"
 			class="arrow"
 			style="transform:scale(-1, 1);"
@@ -29,7 +29,7 @@
 	</span>
 
 	{#if kind === "text"}
-		<img src="/icons/Arrow.svg" alt="button" class="arrow" />
+		<img src="/Icons/Arrow.svg" alt="button" class="arrow" />
 	{/if}
 </button>
 

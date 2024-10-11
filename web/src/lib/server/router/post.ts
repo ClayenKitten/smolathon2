@@ -1,7 +1,7 @@
 import { TRPCError } from "@trpc/server";
 import { protectedProcedure, publicProcedure, router } from "./trpc";
 import { z } from "zod";
-import { Attachment, Code } from "$lib/models";
+import { CreatePost } from "$lib/models";
 import { User } from "../domain/user";
 
 export default function getPostRouter() {
@@ -35,15 +35,8 @@ export default function getPostRouter() {
 				return await ctx.services.post.getUserPosts(user);
 			}),
 		makePost: protectedProcedure
-			.input(
-				z.object({
-					header: z.string(),
-					content: z.string(),
-					attachments: Attachment,
-					tags: z.array(z.number())
-				})
-			)
-			.query(async ({ ctx, input }) => {
+			.input(CreatePost)
+			.mutation(async ({ ctx, input }) => {
 				const date = new Date();
 				return await ctx.services.post.makePost(
 					input.header,

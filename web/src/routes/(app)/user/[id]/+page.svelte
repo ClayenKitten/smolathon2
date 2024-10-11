@@ -9,6 +9,7 @@
 
 <div>
 	<Sidebar
+		user={data.user}
 		profile={data.profile}
 		subscribers={data.subscribers}
 		subscriptions={data.subscribtions}
@@ -36,11 +37,11 @@
 	div {
 		display: flex;
 		height: 100%;
+		gap: 20px;
 	}
 	main {
 		display: flex;
 		gap: 16px;
-		padding: 20px;
 		> div {
 			display: flex;
 			flex-direction: column;

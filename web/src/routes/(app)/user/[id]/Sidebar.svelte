@@ -2,6 +2,7 @@
 	import Button from "$lib/components/Button.svelte";
 	import type { ProfileInfo } from "$lib/models";
 
+	export let user: ProfileInfo | null;
 	export let profile: ProfileInfo;
 	export let subscribers: number;
 	export let subscriptions: number;
