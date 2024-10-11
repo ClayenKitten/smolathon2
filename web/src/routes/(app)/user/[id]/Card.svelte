@@ -10,7 +10,7 @@
 	<div class="post">
 		<span>{post.header}</span>
 		<div class="user">
-			<img src={`/s3/avatar${post.userId}`} alt="" />
+			<img src={`/s3/avatar/${post.userId}`} alt="" />
 			<span>{post.userName}</span>
 		</div>
 	</div>
@@ -56,6 +56,8 @@
 				align-items: center;
 				img {
 					width: 24px;
+					height: 24px;
+					object-fit: cover;
 				}
 				span {
 					font: var(--A);

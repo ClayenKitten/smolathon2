@@ -28,7 +28,7 @@
 			Мероприятие, посвящённое культурной столице и её историческому следу.
 		</div>
 		<div class="host">
-			<img src={`/s3/avatar${post.userId}`} alt="" />
+			<img src={`/s3/avatar/${post.userId}`} alt="" />
 			<span>{post.userName}</span>
 		</div>
 		<div class="buttons">
@@ -83,6 +83,8 @@
 			align-items: center;
 			img {
 				width: 24px;
+				height: 24px;
+				object-fit: cover;
 			}
 			span {
 				font: var(--A);
