@@ -1,42 +1,62 @@
 <script lang="ts">
-	//export let post: "postPreview";
+	import type { Attachment, PostPreview, ProfileInfo } from "$lib/models";
+
+	export let post: PostPreview;
+	$: image = post.attachments.find(
+		x => x.type === "image" || x.type === "video"
+	);
+	$: audio = post.attachments.find(x => x.type === "audio");
 </script>
 
 <article>
-	<div class="video">
-		<video controls width="">
-			<source src="my-video.mp4" type="video/mp4" />
-			<source src="my-video.webm" type="video/webm" />
-		</video>
-		<div class="attachment_list">
-			<span>3 фото</span>
-			<span>2 видео</span>
-			<span>6 аудио</span>
+	{#if image !== undefined}
+		<div class="image">
+			<!-- svelte-ignore a11y-media-has-caption -->
+			{#if image.type === "video"}
+				<video controls width="">
+					<source src={`/s3/attachment/${image.id}`} type="video/mp4" />
+				</video>
+			{:else if image.type === "image"}
+				<img src={`/s3/attachment/${image.id}`} alt="" />
+			{/if}
+			<div class="attachment_list">
+				<span
+					>{post.attachments.filter(x => x.type === "image").length} фото</span
+				>
+				<span
+					>{post.attachments.filter(x => x.type === "video").length} видео</span
+				>
+				<span
+					>{post.attachments.filter(x => x.type === "audio").length} аудио</span
+				>
+			</div>
 		</div>
-	</div>
-	<audio controls src="hi-alice.mp3"> </audio>
+	{/if}
+	{#if audio !== undefined}
+		<audio controls src={`/s3/attachment/${audio.id}`}> </audio>
+	{/if}
 	<div class="post">
-		<span>Каждый в этой жизни ценен.</span>
+		<span>{post.header}</span>
 		<div class="user">
-			<img src="/Icons/Favorite_border.svg" alt="" />
-			<span>Radonezh</span>
+			<img src={`/s3/avatar${post.userId}`} alt="" />
+			<span>{post.userName}</span>
 		</div>
 	</div>
 	<footer>
 		<div class="reaction">
-			<div class="like">
+			<button class="like">
 				<img src="/Icons/Favorite_border.svg" alt="" />
 				<span>12</span>
-			</div>
-			<div class="comment">
+			</button>
+			<button class="comment">
 				<img src="/Icons/Chat_bubble.svg" alt="" />
 				<span>12</span>
-			</div>
+			</button>
 		</div>
-		<div class="repost">
+		<button class="repost">
 			<img src="/Icons/Ios_share.svg" alt="" />
 			<span>12</span>
-		</div>
+		</button>
 	</footer>
 </article>
 
@@ -46,8 +66,9 @@
 		display: flex;
 		flex-direction: column;
 		color: var(--black);
+		background-color: var(--white);
 		border: 1px solid var(--black);
-		.video {
+		.image {
 			position: relative;
 			&:hover {
 				.attachment_list {
@@ -125,6 +146,24 @@
 				display: flex;
 				gap: 4px;
 				align-items: center;
+			}
+		}
+	}
+	button {
+		border: none;
+		background-color: var(--white);
+		&:hover {
+			color: var(--primary-blue);
+			img {
+				filter: invert(65%) sepia(16%) saturate(571%) hue-rotate(153deg)
+					brightness(92%) contrast(87%);
+			}
+		}
+		&:active {
+			color: var(--primary-blue);
+			img {
+				filter: invert(65%) sepia(16%) saturate(571%) hue-rotate(153deg)
+					brightness(92%) contrast(87%);
 			}
 		}
 	}
