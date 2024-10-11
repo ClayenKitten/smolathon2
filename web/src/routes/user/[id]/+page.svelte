@@ -2,6 +2,7 @@
 	import type { PageData } from "./$types";
 	import Sidebar from "./Sidebar.svelte";
 	import Card from "./Card.svelte";
+	import EventCard from "./EventCard.svelte";
 
 	export let data: PageData;
 </script>
@@ -15,7 +16,8 @@
 	<main>
 		<div>
 			{#each data.posts.filter((_, i) => i % 3 === 0) as post}
-				<Card {post} />
+				<EventCard {post} />
+				<!-- <Card {post} /> -->
 			{/each}
 		</div>
 		<div>

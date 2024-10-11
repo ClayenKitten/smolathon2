@@ -1,40 +1,12 @@
 <script lang="ts">
 	import type { Attachment, PostPreview, ProfileInfo } from "$lib/models";
+	import Content from "./Content.svelte";
 
 	export let post: PostPreview;
-	$: image = post.attachments.find(
-		x => x.type === "image" || x.type === "video"
-	);
-	$: audio = post.attachments.find(x => x.type === "audio");
 </script>
 
 <article>
-	{#if image !== undefined}
-		<div class="image">
-			<!-- svelte-ignore a11y-media-has-caption -->
-			{#if image.type === "video"}
-				<video controls width="">
-					<source src={`/s3/attachment/${image.id}`} type="video/mp4" />
-				</video>
-			{:else if image.type === "image"}
-				<img src={`/s3/attachment/${image.id}`} alt="" />
-			{/if}
-			<div class="attachment_list">
-				<span
-					>{post.attachments.filter(x => x.type === "image").length} фото</span
-				>
-				<span
-					>{post.attachments.filter(x => x.type === "video").length} видео</span
-				>
-				<span
-					>{post.attachments.filter(x => x.type === "audio").length} аудио</span
-				>
-			</div>
-		</div>
-	{/if}
-	{#if audio !== undefined}
-		<audio controls src={`/s3/attachment/${audio.id}`}> </audio>
-	{/if}
+	<Content {post} />
 	<div class="post">
 		<span>{post.header}</span>
 		<div class="user">
@@ -68,36 +40,6 @@
 		color: var(--black);
 		background-color: var(--white);
 		border: 1px solid var(--black);
-		.image {
-			position: relative;
-			&:hover {
-				.attachment_list {
-					position: absolute;
-					top: 0;
-					padding: 10px 0px 20px 16px;
-					width: 100%;
-					display: flex;
-					gap: 12px;
-					background-image: linear-gradient(#0000004d, #00000000);
-					span {
-						padding: 4px 8px;
-						color: var(--white);
-						background-color: var(--primary-blue);
-					}
-				}
-			}
-			video {
-				width: 100%;
-				border-bottom: 1px solid var(--black);
-			}
-			.attachment_list {
-				display: none;
-			}
-		}
-		audio {
-			width: 100%;
-			border-bottom: 1px solid var(--black);
-		}
 		.post {
 			display: flex;
 			flex-direction: column;
@@ -122,11 +64,12 @@
 		}
 		footer {
 			display: flex;
-			gap: 109px;
+			justify-content: space-between;
 			padding: 12px 16px;
 			img {
 				width: 24px;
 				height: 24px;
+				filter: var(--filter-black);
 			}
 			.reaction {
 				display: flex;
@@ -155,15 +98,13 @@
 		&:hover {
 			color: var(--primary-blue);
 			img {
-				filter: invert(65%) sepia(16%) saturate(571%) hue-rotate(153deg)
-					brightness(92%) contrast(87%);
+				filter: var(--filter-blue);
 			}
 		}
 		&:active {
 			color: var(--primary-blue);
 			img {
-				filter: invert(65%) sepia(16%) saturate(571%) hue-rotate(153deg)
-					brightness(92%) contrast(87%);
+				filter: var(--filter-blue);
 			}
 		}
 	}
