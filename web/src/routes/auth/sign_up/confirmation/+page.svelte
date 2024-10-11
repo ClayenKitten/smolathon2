@@ -11,7 +11,7 @@
 			<span> Регистрация подтверждена </span>
 			<img src="/Confirmed.svg" alt="" />
 		</div>
-		<a href="/auth/sign_in" class="button">На главную</a>
+		<a href="/auth/sign_in" class="button">Войти</a>
 	</div>
 </main>
 
