@@ -3,7 +3,7 @@ import { Attachment } from "./post";
 
 export const EventPreview = z.object({
 	header: z.string(),
-	date: z.date().nullable(),
+	date: z.string().nullable(),
 	userId: z.number(),
 	userName: z.string(),
 	attachments: z.array(Attachment),
