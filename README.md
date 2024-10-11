@@ -23,11 +23,11 @@
 
 seed-скрипты создают следующие аккаунты:
 
-| Email                           | Пароль   |
-| ------------------------------- | -------- |
-| user1@smolathon.clayenkitten.ru | password |
-| user2@smolathon.clayenkitten.ru | password |
-| user3@smolathon.clayenkitten.ru | password |
+| Email               | Пароль   |
+| ------------------- | -------- |
+| user1@smolcollab.ru | password |
+| user2@smolcollab.ru | password |
+| user3@smolcollab.ru | password |
 
 ### Сервисы
 
