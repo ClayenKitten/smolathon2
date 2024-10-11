@@ -36,6 +36,16 @@ export interface EmailChangeRequest {
   userId: number;
 }
 
+export interface Event {
+  address: string | null;
+  attachments: Generated<Json>;
+  content: string | null;
+  date: string | null;
+  header: string;
+  id: Generated<number>;
+  userId: number;
+}
+
 export interface Message {
   chatId: number;
   content: string;
@@ -122,6 +132,7 @@ export interface User {
 export interface DB {
   chat: Chat;
   emailChangeRequest: EmailChangeRequest;
+  event: Event;
   message: Message;
   passwordRecovery: PasswordRecovery;
   pendingRegistration: PendingRegistration;
