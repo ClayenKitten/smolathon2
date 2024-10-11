@@ -68,6 +68,12 @@ export interface Post {
   userId: number;
 }
 
+export interface PostTag {
+  id: Generated<number>;
+  postId: number;
+  tagId: number;
+}
+
 export interface Product {
   author: string;
   description: string | null;
@@ -120,6 +126,7 @@ export interface DB {
   passwordRecovery: PasswordRecovery;
   pendingRegistration: PendingRegistration;
   post: Post;
+  postTag: PostTag;
   product: Product;
   productOwnership: ProductOwnership;
   session: Session;
